@@ -1,37 +1,44 @@
 ## Heading
 
 > Name the product in a way the reader (i.e. your target customers) will understand.
-> gpt spotify playlist generator
+
+gpt spotify playlist generator
 
 ## Sub-Heading
 
 > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
-> enthusiasts who love music & tech will use this app to speed up their playlist making process
+
+enthusiasts who love music & tech will use this app to speed up their playlist making process
 
 ## Summary
 
 > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
-> my app would link to a user's spotify account and use ChatGPT's api. users would input a mood or a genre of music and ChatGPT would output a playlist according to user input, with a bias towards a user's favorite artists in that genre/mood. with a click of a button, the user can save this playlist to their spotify account
+
+my app would link to a user's spotify account and use ChatGPT's api. users would input a mood or a genre of music and ChatGPT would output a playlist according to user input, with a bias towards a user's favorite artists in that genre/mood. with a click of a button, the user can save this playlist to their spotify account
 
 ## Problem
 
 > Describe the problem your product solves.
-> my product would provide an alternative way to generate playlists so users can see what AI thinks of their music taste. it would also be a fun experience for the user
+
+my product would provide an alternative way to generate playlists so users can see what AI thinks of their music taste. it would also be a fun experience for the user
 
 ## Solution
 
 > Describe how your product elegantly solves the problem.
-> my product would provide a simple UI/UX with only 3 buttons to make it very easy for a user to generate playlists at their will
+
+my product would provide a simple UI/UX with only 3 buttons to make it very easy for a user to generate playlists at their will
 
 ## Quote from You
 
 > A quote from a spokesperson in your company.
-> "Make personalized playlists with almost no effort."
+
+"Make personalized playlists with almost no effort."
 
 ## How to Get Started
 
 > Describe how easy it is to get started.
-> "Simply type in how you're feeling at the moment, and get the perfect playlist for you. If you like it, add it to your Spotify account with the click of a button."
+
+"Simply type in how you're feeling at the moment, and get the perfect playlist for you. If you like it, add it to your Spotify account with the click of a button."
 
 ## Customer Quote
 
