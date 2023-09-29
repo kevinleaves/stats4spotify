@@ -1,12 +1,16 @@
 import { NextAuthOptions } from 'next-auth';
 import SpotifyProvider from 'next-auth/providers/spotify';
 
+const scope =
+  'user-top-read user-read-recently-played user-read-playback-position playlist-read-private playlist-read-collaborative playlist-modify-private playlist-modify-public streaming user-read-email user-read-private user-read-playback-state user-modify-playback-state user-library-read user-library-modify';
+
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   providers: [
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID ?? '',
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET ?? '',
+      authorization: { params: { scope } },
     }),
     // ...add more providers here
   ],
