@@ -1,15 +1,16 @@
 import Input from './(client)/(widgets)/(input)/Input';
 import AuthButton from './(client)/(auth)/components/AuthButton';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getAccessToken, getUsersTopItems } from '@/lib/spotify';
 
 export default async function Home() {
-  const session = await getServerSession(authOptions);
+  const token = getAccessToken();
+  const response = await getUsersTopItems('artists', 'short_term', 50);
+  console.log(response, 'response');
+
   return (
     <main className="flex min-h-screen flex-col justify-between p-24">
-      <>accessToken in server component: {session?.accessToken}</>
+      <>accessToken in server component: {token}</>
       <AuthButton />
-
       <Input />
     </main>
   );
