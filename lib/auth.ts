@@ -15,6 +15,8 @@ export const authOptions: NextAuthOptions = {
       if (account) {
         // account contains the oAuth access token we want. store it in the token
         token.accessToken = account.access_token;
+        token.refreshToken = account.refresh_token;
+        token.accessTokenExpiresAt = account.expires_at;
       }
       return token;
     },
@@ -22,6 +24,8 @@ export const authOptions: NextAuthOptions = {
       // Send properties to the client, like an access_token and user id from a provider.
       if (token) {
         session.accessToken = token.accessToken;
+        session.refreshToken = token.refreshToken;
+        session.accessTokenExpiresAt = token.accessTokenExpiresAt;
       }
       return session;
     },

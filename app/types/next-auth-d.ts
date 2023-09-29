@@ -8,5 +8,7 @@ declare module 'next-auth' {
     user: {} & DefaultSession['user'];
     /** Oauth access token */
     accessToken?: accessToken;
+    refreshToken?: refreshToken;
+    accessTokenExpiresAt?: accessTokenExpiresAt;
   }
 }
