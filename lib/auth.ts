@@ -10,4 +10,20 @@ export const authOptions: NextAuthOptions = {
     }),
     // ...add more providers here
   ],
+  callbacks: {
+    async jwt({ token, user, account, profile }) {
+      if (account) {
+        // account contains the oAuth access token we want. store it in the token
+        token.accessToken = account.access_token;
+      }
+      return token;
+    },
+    async session({ session, user, token }) {
+      // Send properties to the client, like an access_token and user id from a provider.
+      if (token) {
+        session.accessToken = token.accessToken;
+      }
+      return session;
+    },
+  },
 };
