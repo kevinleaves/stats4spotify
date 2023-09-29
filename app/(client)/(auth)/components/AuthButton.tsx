@@ -16,7 +16,6 @@ export default function AuthButton() {
 
   return (
     <>
-      {/* Access token: {accessToken} */}
       <div>{user.name}</div>
       <div>{user.email}</div>
       <div>{user.image}</div>

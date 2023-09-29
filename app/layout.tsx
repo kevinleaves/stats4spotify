@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { SessionProvider } from '@/app/(client)/(auth)/components/SessionProvider';
 import { getServerSession } from 'next-auth';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import Providers from './(providers)/QueryClientProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,7 +22,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SessionProvider session={session}>{children}</SessionProvider>
+        <SessionProvider session={session}>
+          <Providers>
+            <main>{children}</main>
+            <ReactQueryDevtools />
+          </Providers>
+        </SessionProvider>
       </body>
     </html>
   );
