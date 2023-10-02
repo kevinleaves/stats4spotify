@@ -9,7 +9,8 @@ export default async function Home() {
   if (!token) {
     return (
       <main className="flex min-h-screen flex-col justify-between p-24">
-        <p>Invalid Token</p>
+        <p>No Token Found</p>
+        <AuthButton />
       </main>
     );
   }
