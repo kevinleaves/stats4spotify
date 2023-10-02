@@ -79,5 +79,6 @@ export async function getUsersTopItems(
     return res.json();
   } catch (err) {
     console.log(err);
+    return Promise.reject(err);
   }
 }

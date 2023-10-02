@@ -19,7 +19,7 @@ export default function AuthButton() {
       <div>{user.name}</div>
       <div>{user.email}</div>
       <div>{user.image}</div>
-      <div>accessToken: {accessToken}</div>
+      {/* <div>accessToken via session: {accessToken}</div> */}
       <button onClick={() => signOut()}>sign out</button>
     </>
   );
