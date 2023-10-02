@@ -20,6 +20,7 @@ const baseEndpoint = 'https://api.spotify.com/v1';
 
 export async function getAccessToken() {
   const session = await getServerSession(authOptions);
+
   if (!session) {
     return;
   }
@@ -28,7 +29,7 @@ export async function getAccessToken() {
   return accessToken;
 }
 
-export async function refreshAccessToken(token: any) {
+export async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
     const url = 'https://accounts.spotify.com/api/token';
     const options = {
@@ -56,6 +57,7 @@ export async function refreshAccessToken(token: any) {
     };
   } catch (err) {
     console.error(err);
+    return Promise.reject(err);
   }
 }
 
