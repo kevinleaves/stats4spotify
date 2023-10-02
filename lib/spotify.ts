@@ -82,3 +82,24 @@ export async function getUsersTopItems(
     return Promise.reject(err);
   }
 }
+
+export async function getTracksAudioFeatures(
+  trackIDs: string
+): Promise<SpotifyApi.MultipleAudioFeaturesResponse> {
+  const token = await getAccessToken();
+
+  const searchParams = new URLSearchParams({
+    ids: trackIDs,
+  }).toString();
+  const endpoint = `${baseEndpoint}/audio-features/?${searchParams}`;
+
+  const options = {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await fetch(endpoint, options);
+  return response.json();
+}
