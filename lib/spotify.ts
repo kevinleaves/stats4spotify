@@ -1,16 +1,62 @@
 'use server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { JWT } from 'next-auth/jwt';
 
 const baseEndpoint = 'https://api.spotify.com/v1';
+
+// interface myJWT {
+//   name: string;
+//   email: string;
+//   picture: string;
+//   sub: string;
+//   accessToken: string;
+//   refreshToken: string;
+//   accessTokenExpiresAt: number;
+//   iat: number;
+//   exp: number;
+//   jti: string;
+// }
 
 export async function getAccessToken() {
   const session = await getServerSession(authOptions);
   if (!session) {
     return;
   }
+
   const accessToken = session.accessToken;
   return accessToken;
+}
+
+export async function refreshAccessToken(token: any) {
+  try {
+    const url = 'https://accounts.spotify.com/api/token';
+    const options = {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Basic ${Buffer.from(
+          `${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`
+        ).toString('base64')}`,
+      },
+      method: 'POST',
+      body: new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: token.refreshToken,
+      }),
+    };
+
+    const response = await fetch(url, options);
+    const refreshedTokens = await response.json();
+    // console.log(refreshedTokens, 'refreshedTokens');
+    // we have a refreshed token, send back a token in the same shape as the original, but with updated timestamps
+    return {
+      ...token,
+      accessToken: refreshedTokens.access_token,
+      accessTokenExpiresAt: Date.now() + refreshedTokens.expires_in * 1000,
+    };
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 // this is an example of a server action
