@@ -5,19 +5,6 @@ import { JWT } from 'next-auth/jwt';
 
 const baseEndpoint = 'https://api.spotify.com/v1';
 
-// interface myJWT {
-//   name: string;
-//   email: string;
-//   picture: string;
-//   sub: string;
-//   accessToken: string;
-//   refreshToken: string;
-//   accessTokenExpiresAt: number;
-//   iat: number;
-//   exp: number;
-//   jti: string;
-// }
-
 export async function getAccessToken() {
   const session = await getServerSession(authOptions);
 

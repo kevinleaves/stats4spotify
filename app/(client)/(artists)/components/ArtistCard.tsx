@@ -1,11 +1,13 @@
 import Image from 'next/image';
+import ListItem from '@mui/material/ListItem';
+
 interface Props {
   artist: SpotifyApi.ArtistObjectFull;
 }
 
-export default function ArtistCard(artist: SpotifyApi.ArtistObjectFull) {
+export default function ArtistCard({ artist }: Props) {
   return (
-    <div className="border-2 border-red-500 rounded-lg">
+    <ListItem className="flex flex-col" key={artist.id}>
       <div>id: {artist.id}</div>
       <div>{artist.name}</div>
       <div>{artist.popularity}</div>
@@ -17,6 +19,6 @@ export default function ArtistCard(artist: SpotifyApi.ArtistObjectFull) {
         width={320}
         height={320}
       />
-    </div>
+    </ListItem>
   );
 }
