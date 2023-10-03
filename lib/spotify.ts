@@ -102,3 +102,33 @@ export async function getTracksAudioFeatures(
   const response = await fetch(endpoint, options);
   return response.json();
 }
+
+export async function createPlaylist(timeRange) {
+  // https://developer.spotify.com/documentation/web-api/reference/create-playlist
+  const { accessToken: token, userId } = await getAccessToken();
+
+  const timestamp = new Date().toDateString();
+
+  const endpoint = `${baseEndpoint}/users/${userId}/playlists`;
+
+  const options: RequestInit = {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: `Top Tracks ${timestamp}`,
+      public: true,
+      description: `Your favorite tracks ${timeRange} as of ${timestamp}. Created by spotifygpt.com`,
+    }),
+  };
+
+  try {
+    const response = await fetch(endpoint, options);
+    return response.json();
+  } catch (err) {
+    console.error(err);
+    return Promise.reject(err);
+  }
+}

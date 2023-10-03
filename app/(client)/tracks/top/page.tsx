@@ -1,13 +1,15 @@
 import { getTracksAudioFeatures, getUsersTopItems } from '@/lib/spotify';
 import Image from 'next/image';
+import ExportPlaylistButton from '../components/ExportPlaylistButton';
 
 interface Props {
   params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: { timeRange: 'short_term' | 'medium_term' | 'long_term' };
 }
 
 export default async function TracksPage({ searchParams }: Props) {
   const { timeRange } = searchParams;
+
   let headerText = 'Top Tracks: last 4 weeks';
 
   switch (timeRange) {
@@ -25,6 +27,7 @@ export default async function TracksPage({ searchParams }: Props) {
   }
 
   const response = await getUsersTopItems('tracks', timeRange, 50);
+
   if (!response) {
     return;
   }
@@ -52,11 +55,13 @@ export default async function TracksPage({ searchParams }: Props) {
       Object.assign(tracks[i], features[i]);
     }
   };
+
   addMetadataToTracks(tracks, features);
 
   return (
     <main className="flex flex-col justify-center items-center gap-20">
       <h2 className="text-3xl">{headerText}</h2>
+      <ExportPlaylistButton headerText={headerText} />
       <ul className="flex flex-col gap-4">
         {tracks.map((track) => (
           <li key={track.id} className="flex gap-4">
