@@ -7,11 +7,24 @@ interface Props {
 }
 
 export default async function TracksPage({ searchParams }: Props) {
-  console.log(searchParams);
   const { timeRange } = searchParams;
+  let headerText = 'Top Tracks: last 4 weeks';
+
+  switch (timeRange) {
+    case 'short_term':
+      headerText = 'Top Tracks: last 4 weeks';
+      break;
+    case 'medium_term':
+      headerText = 'Top Tracks: last 6 months';
+      break;
+    case 'long_term':
+      headerText = 'Top Tracks: all time';
+      break;
+    default:
+      break;
+  }
 
   const response = await getUsersTopItems('tracks', timeRange, 50);
-  // console.log(response, 'response');
   if (!response) {
     return;
   }
@@ -42,8 +55,8 @@ export default async function TracksPage({ searchParams }: Props) {
   addMetadataToTracks(tracks, features);
 
   return (
-    <main className="flex flex-col justify-center gap-20">
-      <h2 className="text-3xl">TOP TRACKS (LAST 4 WEEKS)</h2>
+    <main className="flex flex-col justify-center items-center gap-20">
+      <h2 className="text-3xl">{headerText}</h2>
       <ul className="flex flex-col gap-4">
         {tracks.map((track) => (
           <li key={track.id} className="flex gap-4">
