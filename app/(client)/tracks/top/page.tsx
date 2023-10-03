@@ -42,7 +42,7 @@ export default async function TracksPage({ searchParams }: Props) {
   addMetadataToTracks(tracks, features);
 
   return (
-    <main className="flex flex-col justify-center p-36 gap-20">
+    <main className="flex flex-col justify-center gap-20">
       <h2 className="text-3xl">TOP TRACKS (LAST 4 WEEKS)</h2>
       <ul className="flex flex-col gap-4">
         {tracks.map((track) => (
