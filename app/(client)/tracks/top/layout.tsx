@@ -4,16 +4,24 @@ export default async function TracksLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const links = ['short_term', 'medium_term', 'long_term'];
+  const links = [
+    { id: 1, param: 'short_term', label: 'last 4 weeks' },
+    { id: 2, param: 'medium_term', label: 'last 6 months' },
+    { id: 3, param: 'long_term', label: 'all time' },
+  ];
 
   return (
-    <div>
-      <nav className="flex gap-4">
-        {links.map((link) => (
-          <Link href={`/tracks/top/?timeRange=${link}`}>{link}</Link>
-        ))}
+    <section>
+      <nav className="flex justify-center p-4">
+        <ul className="flex gap-4">
+          {links.map(({ id, param, label }) => (
+            <Link key={id} href={`/tracks/top/?timeRange=${param}`}>
+              {label}
+            </Link>
+          ))}
+        </ul>
       </nav>
       {children}
-    </div>
+    </section>
   );
 }
