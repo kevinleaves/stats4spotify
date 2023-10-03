@@ -132,3 +132,26 @@ export async function createPlaylist(timeRange) {
     return Promise.reject(err);
   }
 }
+
+export async function getUserProfile() {
+  // https://developer.spotify.com/documentation/web-api/reference/get-current-users-profile
+  const { accessToken: token } = await getAccessToken();
+
+  const endpoint = `${baseEndpoint}/me`;
+
+  const options: RequestInit = {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    const response = await fetch(endpoint, options);
+    const profile = await response.json();
+    return profile;
+  } catch (err) {
+    console.error(err);
+    return Promise.reject(err);
+  }
+}
