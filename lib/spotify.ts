@@ -62,7 +62,7 @@ export async function getUsersTopItems(
 
   try {
     const searchParams = new URLSearchParams({
-      time_range: timeRange,
+      time_range: timeRange ?? 'short_term',
       limit,
       offset: 0,
     }).toString();
