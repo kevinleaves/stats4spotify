@@ -16,11 +16,14 @@ export default function AuthButton() {
 
   return (
     <>
-      <div>{user.name}</div>
-      <div>{user.email}</div>
-      <div>{user.image}</div>
-      {/* <div>accessToken via session: {accessToken}</div> */}
-      <button onClick={() => signOut()}>sign out</button>
+      {/* <Image src={user.image} width={50} height={50} /> */}
+      <button
+        onClick={() => {
+          signOut({ callbackUrl: '/' });
+        }}
+      >
+        sign out
+      </button>
     </>
   );
 }
