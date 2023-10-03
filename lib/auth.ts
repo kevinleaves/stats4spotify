@@ -22,6 +22,7 @@ export const authOptions: NextAuthOptions = {
       // if no user => access token exists but expired
       if (account && user) {
         // account contains the oAuth access token we want. store it in the token
+        token.userId = user.id;
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
         token.accessTokenExpiresAt = account.expires_at;
@@ -39,7 +40,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, user, token }) {
       // Send properties to the client, like an access_token and user id from a provider.
-      if (token && user) {
+      if (token && !token.userId) {
         session.accessToken = token.accessToken;
         session.refreshToken = token.refreshToken;
         session.accessTokenExpiresAt = token.accessTokenExpiresAt;
@@ -48,6 +49,7 @@ export const authOptions: NextAuthOptions = {
 
       // our token is invalid, refresh it
       const newToken = await refreshAccessToken(token);
+      session.userId = newToken?.userId;
       session.accessToken = newToken?.accessToken;
       session.refreshToken = newToken?.refreshToken;
       session.accessTokenExpiresAt = newToken?.accessTokenExpiresAt;

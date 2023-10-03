@@ -12,8 +12,7 @@ export async function getAccessToken() {
     return;
   }
 
-  const accessToken = session.accessToken;
-  return accessToken;
+  return session;
 }
 
 export async function refreshAccessToken(token: JWT): Promise<JWT> {
@@ -54,7 +53,7 @@ export async function getUsersTopItems(
   timeRange: 'short_term' | 'medium_term' | 'long_term',
   limit: number
 ) {
-  const token = await getAccessToken();
+  const { accessToken: token } = await getAccessToken();
 
   if (!token) {
     return;
@@ -86,7 +85,7 @@ export async function getUsersTopItems(
 export async function getTracksAudioFeatures(
   trackIDs: string
 ): Promise<SpotifyApi.MultipleAudioFeaturesResponse> {
-  const token = await getAccessToken();
+  const { accessToken: token } = await getAccessToken();
 
   const searchParams = new URLSearchParams({
     ids: trackIDs,

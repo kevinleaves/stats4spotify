@@ -6,7 +6,7 @@ import ArtistList from '../components/ArtistList';
 interface Props {}
 
 export default async function ArtistPage({}: Props) {
-  const token = await getAccessToken();
+  const { accessToken: token } = await getAccessToken();
   // console.log(token, 'token');
   if (!token) {
     return (
