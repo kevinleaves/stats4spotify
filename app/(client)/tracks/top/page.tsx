@@ -43,6 +43,8 @@ export default async function TracksPage({ searchParams }: Props) {
     return tracks.map((tracks) => tracks.id).join(',');
   };
 
+  const trackUris = tracks.map((track) => track.uri);
+
   const { audio_features: features } = await getTracksAudioFeatures(
     getTrackIds(tracks)
   );
@@ -61,7 +63,7 @@ export default async function TracksPage({ searchParams }: Props) {
   return (
     <main className="flex flex-col justify-center items-center gap-20">
       <h2 className="text-3xl">{headerText}</h2>
-      <ExportPlaylistButton headerText={headerText} />
+      <ExportPlaylistButton headerText={headerText} uris={trackUris} />
       <ul className="flex flex-col gap-4">
         {tracks.map((track) => (
           <li key={track.id} className="flex gap-4">

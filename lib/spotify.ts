@@ -155,3 +155,29 @@ export async function getUserProfile() {
     return Promise.reject(err);
   }
 }
+
+export async function addItemsToPlaylist(playlistId: string, uris: string[]) {
+  // https://developer.spotify.com/documentation/web-api/reference/add-tracks-to-playlist
+  const { accessToken: token } = await getAccessToken();
+
+  const endpoint = `${baseEndpoint}/playlists/${playlistId}/tracks`;
+
+  const options: RequestInit = {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      uris,
+    }),
+  };
+
+  try {
+    const res = await fetch(endpoint, options);
+    return res.json();
+  } catch (err) {
+    console.error(err);
+    Promise.reject(err);
+  }
+}
