@@ -65,8 +65,9 @@ export default async function TracksPage({ searchParams }: Props) {
       <h2 className="text-3xl">{headerText}</h2>
       <ExportPlaylistButton headerText={headerText} uris={trackUris} />
       <ul className="flex flex-col gap-4">
-        {tracks.map((track) => (
+        {tracks.map((track, index) => (
           <li key={track.id} className="flex gap-4">
+            <p className="font-bold text-md self-center">{index + 1}</p>
             <Image
               src={track.album.images[1].url}
               alt="a track image"
