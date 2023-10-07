@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 interface Props {}
 
@@ -11,23 +11,21 @@ const links = [
 ];
 
 export default function TrackLinks({}: Props) {
-  const pathname = usePathname();
   const params = useSearchParams();
   const activeLink = params.get('timeRange') ?? 'short_term';
   return (
     <ul className="flex gap-4">
       {links.map(({ id, param, label }) => (
-        <>
+        <li key={id}>
           <Link
             className={`${
               activeLink === param ? 'font-bold' : 'font-extralight'
             }`}
-            key={id}
             href={`/tracks/top/?timeRange=${param}`}
           >
             {label}
           </Link>
-        </>
+        </li>
       ))}
     </ul>
   );
