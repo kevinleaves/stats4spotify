@@ -2,10 +2,27 @@
 import { useState } from 'react';
 import { getPlaylist } from '../../(services)/openai-service';
 
+import { getUsersTopItems } from '@/lib/spotify';
+import { useQuery } from '@tanstack/react-query';
+
+function useUsersTopArtists() {
+  // hook used to data fetch users top artists from a client component
+  return useQuery({
+    queryKey: ['topArtists'],
+    queryFn: () => getUsersTopItems('artists', 'short_term', 50),
+  });
+}
+
 export default function Input() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState('');
+
+  const { status, data, error, isFetching } = useUsersTopArtists();
+
+  if (!isFetching) {
+    console.log(data, 'data');
+  }
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -16,17 +33,10 @@ export default function Input() {
     setInput('');
   }
 
-  const login = async () => {
-    const res = await fetch('/api/spotify/login');
-    const data = await res.json();
-    console.log(data, 'data');
-  };
-
   return (
     <section>
       {isLoading ? <div>loading </div> : <div>not loading</div>}
       <div>{results}</div>
-      <button onClick={login}>log into spotify</button>
       <form onSubmit={onSubmit}>
         <input
           className="rounded-lg text-black w-full h-12"
