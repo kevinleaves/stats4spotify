@@ -3,6 +3,7 @@ import { getAccessToken, getUsersTopItems } from '@/lib/spotify';
 import Loading from './loading';
 import AuthButton from '../../(auth)/components/AuthButton';
 import ArtistList from '../components/ArtistList';
+import useUserTop from '../../tracks/hooks/useUserTop';
 
 interface Props {
   searchParams: { timeRange: 'short_term' | 'medium_term' | 'long_term' };
@@ -27,6 +28,8 @@ export async function ArtistPage({ searchParams }: Props) {
 
   const { timeRange } = searchParams;
 
+  const { artists } = await useUserTop(timeRange, 'artists');
+
   if (!token) {
     return (
       <main className="flex min-h-screen flex-col justify-between p-24">
@@ -35,9 +38,6 @@ export async function ArtistPage({ searchParams }: Props) {
       </main>
     );
   }
-  const response = await getUsersTopItems('artists', timeRange, 50);
-
-  const { items: artists }: { items: SpotifyApi.ArtistObjectFull[] } = response;
 
   // sort method mutates original array, so we copy it
   const sorted = [...artists].sort((a, b) => {

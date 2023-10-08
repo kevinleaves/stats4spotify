@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import Loading from './loading';
 import TrackList from '../components/TrackList';
 import ExportPlaylistButton from '../components/ExportPlaylistButton';
+import useUserTop from '../hooks/useUserTop';
 
 interface Props {
   params: { slug: string };
@@ -42,34 +43,7 @@ export async function TracksPage({ searchParams }: Props) {
       break;
   }
 
-  const response = await getUsersTopItems('tracks', timeRange, 50);
-
-  if (!response) {
-    return;
-  }
-
-  const { items: tracks }: { items: SpotifyApi.TrackObjectFull[] } = response;
-
-  const getTrackIds = (tracks: SpotifyApi.TrackObjectFull[]) => {
-    return tracks.map((tracks) => tracks.id).join(',');
-  };
-
-  const trackUris = tracks.map((track) => track.uri);
-
-  const { audio_features: features } = await getTracksAudioFeatures(
-    getTrackIds(tracks)
-  );
-
-  const addMetadataToTracks = (
-    tracks: SpotifyApi.TrackObjectFull[],
-    features: SpotifyApi.AudioFeaturesObject[]
-  ) => {
-    for (let i = 0; i < tracks.length; i++) {
-      Object.assign(tracks[i], features[i]);
-    }
-  };
-
-  addMetadataToTracks(tracks, features);
+  const { tracks, trackUris } = await useUserTop(timeRange, 'tracks');
 
   return (
     <main className="flex flex-col justify-center items-center gap-20">
