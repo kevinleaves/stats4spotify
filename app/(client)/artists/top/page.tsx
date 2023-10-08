@@ -1,5 +1,6 @@
+import { Suspense } from 'react';
 import { getAccessToken, getUsersTopItems } from '@/lib/spotify';
-
+import Loading from './loading';
 import AuthButton from '../../(auth)/components/AuthButton';
 import ArtistList from '../components/ArtistList';
 
@@ -7,7 +8,21 @@ interface Props {
   searchParams: { timeRange: 'short_term' | 'medium_term' | 'long_term' };
 }
 
-export default async function ArtistPage({ searchParams }: Props) {
+export default async function ArtistPageWrapper(props: Props) {
+  // As of Next.js 13.4.1, modifying searchParams doesn't trigger the page's file-based suspense boundary to re-fallback.
+  // So to bypass that until there's a fix, we'll make our manage our own suspense boundary with params as a unique key.
+
+  // The "dialog" search param shouldn't trigger a re-fetch
+  const key = JSON.stringify({ ...props.searchParams });
+
+  return (
+    <Suspense key={key} fallback={<Loading />}>
+      <ArtistPage {...props} />
+    </Suspense>
+  );
+}
+
+export async function ArtistPage({ searchParams }: Props) {
   const { accessToken: token } = await getAccessToken();
 
   const { timeRange } = searchParams;
@@ -29,5 +44,9 @@ export default async function ArtistPage({ searchParams }: Props) {
     return b.popularity - a.popularity;
   });
 
-  return <ArtistList artists={artists} />;
+  return (
+    // <main className="flex">
+    <ArtistList artists={artists} />
+    // </main>
+  );
 }
