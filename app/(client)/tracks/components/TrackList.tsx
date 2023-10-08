@@ -1,7 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import { getTracksAudioFeatures, getUsersTopItems } from '@/lib/spotify';
+import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { fab } from '@fortawesome/free-brands-svg-icons';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Props {
@@ -54,7 +56,9 @@ export default function TrackList({ tracks }: Props) {
                   BPM/Tempo: {Math.round(track.tempo)}
                 </p>
               </div>
-            <a href={track.uri}>track link</a>
+              <Link href={track.uri} target="_blank">
+                <FontAwesomeIcon className={'h-8'} icon={fab.faSpotify} />
+              </Link>
             </div>
           </motion.li>
         ))}

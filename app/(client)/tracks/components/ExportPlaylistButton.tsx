@@ -1,5 +1,6 @@
 'use client';
 import { createPlaylist, addItemsToPlaylist } from '@/lib/spotify';
+
 interface Props {
   headerText: string;
   uris: string[];
@@ -15,7 +16,10 @@ export default function ExportPlaylistButton({ headerText, uris }: Props) {
   };
 
   return (
-    <button onClick={() => exportPlaylist(headerText, uris)}>
+    <button
+      className={'bg-green-600 w-2/6 h-12 rounded-lg'}
+      onClick={() => exportPlaylist(headerText, uris)}
+    >
       create playlist
     </button>
   );
