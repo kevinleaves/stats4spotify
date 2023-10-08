@@ -9,7 +9,21 @@ interface Props {
   searchParams: { timeRange: 'short_term' | 'medium_term' | 'long_term' };
 }
 
-export default async function TracksPage({ searchParams }: Props) {
+export default async function TracksPageWrapper(props: Props) {
+  // As of Next.js 13.4.1, modifying searchParams doesn't trigger the page's file-based suspense boundary to re-fallback.
+  // So to bypass that until there's a fix, we'll make our manage our own suspense boundary with params as a unique key.
+
+  // The "dialog" search param shouldn't trigger a re-fetch
+  const key = JSON.stringify({ ...props.searchParams });
+
+  return (
+    <Suspense key={key} fallback={<Loading />}>
+      <TracksPage {...props} />
+    </Suspense>
+  );
+}
+
+export async function TracksPage({ searchParams }: Props) {
   const { timeRange } = searchParams;
 
   let headerText = 'Top Tracks: last 4 weeks';
@@ -60,11 +74,8 @@ export default async function TracksPage({ searchParams }: Props) {
   return (
     <main className="flex flex-col justify-center items-center gap-20">
       <h2 className="text-3xl">{headerText}</h2>
-
-      <Suspense key={searchParams.timeRange} fallback={<Loading />}>
-        <ExportPlaylistButton headerText={headerText} uris={trackUris} />
-        <TrackList tracks={tracks} />
-      </Suspense>
+      <TrackList tracks={tracks} />
+      <ExportPlaylistButton headerText={headerText} uris={trackUris} />
     </main>
   );
 }
