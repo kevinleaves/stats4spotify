@@ -2,15 +2,18 @@
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
-interface Props {}
+interface Link {
+  id: number;
+  param: 'short_term' | 'medium_term' | 'long_term';
+  label: 'last 4 weeks' | 'last 6 months' | 'all time';
+}
 
-const links = [
-  { id: 1, param: 'short_term', label: 'last 4 weeks' },
-  { id: 2, param: 'medium_term', label: 'last 6 months' },
-  { id: 3, param: 'long_term', label: 'all time' },
-];
+interface Props {
+  links: Link[];
+  baseUrl: string;
+}
 
-export default function AlbumLinks({}: Props) {
+export default function LinkList({ links, baseUrl }: Props) {
   const params = useSearchParams();
   const activeLink = params.get('timeRange') ?? 'short_term';
   return (
@@ -21,7 +24,7 @@ export default function AlbumLinks({}: Props) {
             className={`${
               activeLink === param ? 'font-bold' : 'font-extralight'
             }`}
-            href={`/artists/top/?timeRange=${param}`}
+            href={`${baseUrl}${param}`}
           >
             {label}
           </Link>

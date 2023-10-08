@@ -1,5 +1,18 @@
-import AlbumLinks from '../../(nav)/components/AlbumLinks';
-export default async function TracksLayout({
+import LinkList from '../../(common)/components/LinkList';
+
+interface Link {
+  id: number;
+  param: 'short_term' | 'medium_term' | 'long_term';
+  label: 'last 4 weeks' | 'last 6 months' | 'all time';
+}
+
+const links: Link[] = [
+  { id: 1, param: 'short_term', label: 'last 4 weeks' },
+  { id: 2, param: 'medium_term', label: 'last 6 months' },
+  { id: 3, param: 'long_term', label: 'all time' },
+];
+
+export default async function ArtistsLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -7,7 +20,7 @@ export default async function TracksLayout({
   return (
     <section>
       <nav className="flex justify-center p-4">
-        <AlbumLinks />
+        <LinkList links={links} baseUrl={'/artists/top/?timeRange='} />
       </nav>
       {children}
     </section>
