@@ -14,12 +14,15 @@ export default function ArtistCard({ artist }: Props) {
   } = artist;
   return (
     <ListItem className="flex flex-col" key={artist.id}>
-      <Image
-        src={artist.images[1].url}
-        alt={'spotify artist image'}
-        width={320}
-        height={320}
-      />
+      <div className="">
+        <Image
+          src={artist.images[1].url}
+          alt={'spotify artist image'}
+          width={320}
+          height={320}
+          className="max-h-80 object-contain"
+        />
+      </div>
       {/* <div>id: {artist.id}</div> */}
       <div>{artist.name}</div>
       {/* <div>{JSON.stringify(artist.genres)}</div> */}

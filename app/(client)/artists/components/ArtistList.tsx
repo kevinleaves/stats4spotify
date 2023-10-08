@@ -1,6 +1,5 @@
 // VIEW COMPONENT
 
-import List from '@mui/material/List';
 import ArtistCard from './ArtistCard';
 
 interface Props {
@@ -9,10 +8,10 @@ interface Props {
 
 export default function ArtistList({ artists }: Props) {
   return (
-    <List sx={{ display: 'flex', flexDirection: 'column' }}>
+    <ol className="grid grid-cols-3 grid-rows-3">
       {artists.map((artist) => (
         <ArtistCard key={artist.id} artist={artist} />
       ))}
-    </List>
+    </ol>
   );
 }
