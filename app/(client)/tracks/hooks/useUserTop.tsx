@@ -16,41 +16,46 @@ export default async function useUserTop(
   timeRange: 'short_term' | 'medium_term' | 'long_term',
   type: 'tracks' | 'artists'
 ) {
-  const response = await getUsersTopItems(type, timeRange, 50);
+  try {
+    const response = await getUsersTopItems(type, timeRange, 50);
 
-  if (type === 'artists') {
-    const { items: artists }: { items: SpotifyApi.ArtistObjectFull[] } =
-      response;
-    return {
-      artists,
-    };
-  }
-
-  const { items: tracks }: { items: SpotifyApi.TrackObjectFull[] } = response;
-
-  const getTrackIds = (tracks: SpotifyApi.TrackObjectFull[]) => {
-    return tracks.map((tracks) => tracks.id).join(',');
-  };
-
-  const trackUris = tracks.map((track) => track.uri);
-
-  const { audio_features: features } = await getTracksAudioFeatures(
-    getTrackIds(tracks)
-  );
-
-  const addMetadataToTracks = (
-    tracks: SpotifyApi.TrackObjectFull[],
-    features: SpotifyApi.AudioFeaturesObject[]
-  ) => {
-    for (let i = 0; i < tracks.length; i++) {
-      Object.assign(tracks[i], features[i]);
+    if (type === 'artists') {
+      const { items: artists }: { items: SpotifyApi.ArtistObjectFull[] } =
+        response;
+      return {
+        artists,
+      };
     }
-  };
 
-  addMetadataToTracks(tracks, features);
+    const { items: tracks }: { items: SpotifyApi.TrackObjectFull[] } = response;
 
-  return {
-    tracks,
-    trackUris,
-  };
+    const getTrackIds = (tracks: SpotifyApi.TrackObjectFull[]) => {
+      return tracks.map((tracks) => tracks.id).join(',');
+    };
+
+    const trackUris = tracks.map((track) => track.uri);
+
+    const { audio_features: features } = await getTracksAudioFeatures(
+      getTrackIds(tracks)
+    );
+
+    const addMetadataToTracks = (
+      tracks: SpotifyApi.TrackObjectFull[],
+      features: SpotifyApi.AudioFeaturesObject[]
+    ) => {
+      for (let i = 0; i < tracks.length; i++) {
+        Object.assign(tracks[i], features[i]);
+      }
+    };
+
+    addMetadataToTracks(tracks, features);
+    return {
+      tracks,
+      trackUris,
+    };
+  } catch (err) {
+    console.error(err);
+    Promise.reject(err);
+    return { tracks: [], trackUris: [] };
+  }
 }
