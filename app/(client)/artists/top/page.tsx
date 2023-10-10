@@ -1,28 +1,35 @@
-import { getAccessToken, getUsersTopItems } from '@/lib/spotify';
-
-import AuthButton from '../../(auth)/components/AuthButton';
+import { Suspense } from 'react';
+import Loading from './loading';
 import ArtistList from '../components/ArtistList';
+import useUserTop from '../../tracks/hooks/useUserTop';
 
-interface Props {}
+interface Props {
+  searchParams: { timeRange: 'short_term' | 'medium_term' | 'long_term' };
+}
 
-export default async function ArtistPage({}: Props) {
-  const { accessToken: token } = await getAccessToken();
-  // console.log(token, 'token');
-  if (!token) {
-    return (
-      <main className="flex min-h-screen flex-col justify-between p-24">
-        <p>No Token Found</p>
-        <AuthButton />
-      </main>
-    );
-  }
-  const response = await getUsersTopItems('artists', 'short_term', 50);
+export default async function ArtistPageWrapper(props: Props) {
+  // As of Next.js 13.4.1, modifying searchParams doesn't trigger the page's file-based suspense boundary to re-fallback.
+  // So to bypass that until there's a fix, we'll make our manage our own suspense boundary with params as a unique key.
 
-  const { items }: { items: SpotifyApi.ArtistObjectFull[] } = response;
+  // The "dialog" search param shouldn't trigger a re-fetch
+  const key = JSON.stringify({ ...props.searchParams });
 
-  const sorted = items.sort((a, b) => {
+  return (
+    <Suspense key={key} fallback={<Loading />}>
+      <ArtistPage {...props} />
+    </Suspense>
+  );
+}
+
+export async function ArtistPage({ searchParams }: Props) {
+  const { timeRange } = searchParams;
+
+  const { artists } = await useUserTop(timeRange, 'artists');
+
+  // sort method mutates original array, so we copy it
+  const sorted = artists?.slice().sort((a, b) => {
     return b.popularity - a.popularity;
   });
 
-  return <ArtistList artists={sorted} />;
+  return <ArtistList artists={artists} />;
 }

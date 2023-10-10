@@ -12,7 +12,7 @@ const links: Link[] = [
   { id: 3, param: 'long_term', label: 'all time' },
 ];
 
-export default async function TracksLayout({
+export default async function ArtistsLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -20,7 +20,7 @@ export default async function TracksLayout({
   return (
     <section>
       <nav className="flex justify-center p-4">
-        <LinkList links={links} baseUrl={'/tracks/top/?timeRange='} />
+        <LinkList links={links} baseUrl={'/artists/top/?timeRange='} />
       </nav>
       {children}
     </section>
