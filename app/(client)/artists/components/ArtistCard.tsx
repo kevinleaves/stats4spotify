@@ -21,7 +21,7 @@ export default function ArtistCard({ artist }: Props) {
           alt={'spotify artist image'}
           width={320}
           height={320}
-          className="max-h-80 object-contain"
+          className="max-h-80 object-cover rounded-md"
         />
       </div>
       <div className="min-h-16 text-lg">{artist.name}</div>
