@@ -1,7 +1,5 @@
 import { Suspense } from 'react';
-import { getAccessToken, getUsersTopItems } from '@/lib/spotify';
 import Loading from './loading';
-import AuthButton from '../../(auth)/components/AuthButton';
 import ArtistList from '../components/ArtistList';
 import useUserTop from '../../tracks/hooks/useUserTop';
 
@@ -24,29 +22,14 @@ export default async function ArtistPageWrapper(props: Props) {
 }
 
 export async function ArtistPage({ searchParams }: Props) {
-  const { accessToken: token } = await getAccessToken();
-
   const { timeRange } = searchParams;
 
   const { artists } = await useUserTop(timeRange, 'artists');
 
-  if (!token) {
-    return (
-      <main className="flex min-h-screen flex-col justify-between p-24">
-        <p>No Token Found</p>
-        <AuthButton />
-      </main>
-    );
-  }
-
   // sort method mutates original array, so we copy it
-  const sorted = [...artists].sort((a, b) => {
+  const sorted = artists?.slice().sort((a, b) => {
     return b.popularity - a.popularity;
   });
 
-  return (
-    // <main className="flex">
-    <ArtistList artists={artists} />
-    // </main>
-  );
+  return <ArtistList artists={artists} />;
 }

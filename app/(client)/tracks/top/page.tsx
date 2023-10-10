@@ -1,4 +1,3 @@
-import { getTracksAudioFeatures, getUsersTopItems } from '@/lib/spotify';
 import { Suspense } from 'react';
 import Loading from './loading';
 import TrackList from '../components/TrackList';
