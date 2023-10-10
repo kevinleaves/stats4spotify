@@ -5,6 +5,9 @@ import type { NextRequest } from 'next/server';
 // This function can be marked `async` if using `await` inside
 export default withAuth(
   function middleware(request: NextRequest) {
+    console.log(request, 'req in middleware');
+    console.log(request.nextauth, 'req.nextauth in middleware');
+    console.log(request.nextauth.token, 'req.nextauth.token in middleware');
     if (!request.nextauth.token) {
       return NextResponse.redirect(new URL('/api/auth/signin', request.url));
     } else {
