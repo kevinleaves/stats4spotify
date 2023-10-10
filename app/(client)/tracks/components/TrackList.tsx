@@ -7,7 +7,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Props {
-  tracks: SpotifyApi.TrackObjectFull[];
+  tracks: SpotifyApi.TrackObjectFull[] | undefined;
 }
 
 export default function TrackList({ tracks }: Props) {
@@ -29,7 +29,7 @@ export default function TrackList({ tracks }: Props) {
   return (
     <AnimatePresence>
       <ul className="flex flex-col gap-4">
-        {tracks.map((track, index) => (
+        {tracks?.map((track, index) => (
           <motion.li
             key={track.id}
             className="flex gap-4"

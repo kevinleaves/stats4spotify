@@ -156,7 +156,10 @@ export async function getUserProfile() {
   }
 }
 
-export async function addItemsToPlaylist(playlistId: string, uris: string[]) {
+export async function addItemsToPlaylist(
+  playlistId: string,
+  uris: string[] = []
+) {
   // https://developer.spotify.com/documentation/web-api/reference/add-tracks-to-playlist
   const { accessToken: token } = await getAccessToken();
 
