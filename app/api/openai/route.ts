@@ -1,3 +1,5 @@
+import { Ratelimit } from '@upstash/ratelimit';
+import { kv } from '@vercel/kv';
 import OpenAI from 'openai';
 import { songData } from '../../(data)/songData.js';
 import { OpenAIStream, StreamingTextResponse } from 'ai';
@@ -9,6 +11,34 @@ const openai = new OpenAI({
 export const runtime = 'edge';
 
 export async function POST(request: Request) {
+  if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+    const ip = request.headers.get('x-forwarded-for');
+    const ratelimit = new Ratelimit({
+      redis: kv,
+      // rate limit to 1 request per 10 seconds
+      limiter: Ratelimit.slidingWindow(1, '10s'),
+    });
+
+    const { success, limit, reset, remaining } = await ratelimit.limit(
+      `ratelimit_${ip}`
+    );
+
+    if (!success) {
+      return new Response('Too many requests.', {
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': limit.toString(),
+          'X-RateLimit-Remaining': remaining.toString(),
+          'X-RateLimit-Reset': reset.toString(),
+        },
+      });
+    }
+  } else {
+    console.log(
+      'KV_REST_API_URL and KV_REST_API_TOKEN env vars not found, not rate limiting...'
+    );
+  }
+
   const response = await openai.chat.completions.create({
     messages: [
       {
