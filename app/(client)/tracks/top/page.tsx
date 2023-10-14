@@ -3,6 +3,7 @@ import Loading from './loading';
 import TrackList from '../components/TrackList';
 import ExportPlaylistButton from '../components/ExportPlaylistButton';
 import useUserTop from '../hooks/useUserTop';
+import Chat from '../../(widgets)/(input)/Chat';
 
 interface Props {
   params: { slug: string };
@@ -47,6 +48,7 @@ export async function TracksPage({ searchParams }: Props) {
   return (
     <main className="flex flex-col justify-center items-center gap-20">
       <h2 className="text-3xl">{headerText}</h2>
+      <Chat />
       <TrackList tracks={tracks} />
       <ExportPlaylistButton headerText={headerText} uris={trackUris} />
     </main>
