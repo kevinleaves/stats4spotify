@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Project Objective
 
-## Getting Started
+- combined OpenAI Chat Completions API w/ Spotify /users/top endpoint to analyze user's music taste from the perspective of a music reviewer
 
-First, run the development server:
+## project takeaways
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Best Practices
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- extracting repetitive business logic inside of custom hooks (useUserTop.tsx)
+- API keys should not be exposed in client side calls, hitting external APIs should happen from server-side
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Auth
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- implemented Spotify OAuth 2.0 flow using Auth.js + JWT (auth.ts)
+- customize Auth.js callbacks to add necessary OAuth data into JWT & session objects (auth.ts)
 
-## Learn More
+### Next.js 13
 
-To learn more about Next.js, take a look at the following resources:
+- next.js app router architecture
+- fetching data client-side vs server-side (react query vs fetch API in server components)
+- grabbing URL searchParams within server pages props (/tracks/top/page.tsx)
+- differences in client-side vs server-side
+- authentication in client-side vs server-side
+- Next 13 exclusive:
+  - when to use client components (interactive components) as opposed to server components
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Frontend
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- wrap components/pages in React Suspense + fallback to handle loading state for better UX (/tracks/top/page.tsx)
 
-## Deploy on Vercel
+### Backend
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- streaming chatgpt response via ReadableStream instead of waiting for the entire response to complete for better UX (/api/openai/route.ts)
