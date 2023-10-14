@@ -1,13 +1,15 @@
-import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { songData } from '../../(data)/songData.js';
+import { OpenAIStream, StreamingTextResponse } from 'ai';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+export const runtime = 'edge';
+
 export async function POST(request: Request) {
-  const chatCompletion = await openai.chat.completions.create({
+  const response = await openai.chat.completions.create({
     messages: [
       {
         role: 'system',
@@ -24,7 +26,14 @@ export async function POST(request: Request) {
       },
     ],
     model: 'gpt-3.5-turbo',
+    stream: true,
   });
-  console.log(chatCompletion.usage, 'choices');
-  return NextResponse.json({ data: chatCompletion.choices });
+
+  // Convert the OpenAI response into a ReadableStream
+  const stream = OpenAIStream(response);
+
+  // Respond with the stream
+  const textResponse = new StreamingTextResponse(stream);
+
+  return textResponse;
 }
