@@ -3,6 +3,7 @@ import Loading from './loading';
 import TrackList from '../components/TrackList';
 import ExportPlaylistButton from '../components/ExportPlaylistButton';
 import useUserTop from '../hooks/useUserTop';
+import Chat from '../../(widgets)/(input)/Chat';
 
 interface Props {
   params: { slug: string };
@@ -44,9 +45,25 @@ export async function TracksPage({ searchParams }: Props) {
 
   const { tracks, trackUris } = await useUserTop(timeRange, 'tracks');
 
+  if (tracks === undefined) {
+    return <>Error: Tracks Not Found</>;
+  }
+
+  const getArtistString = (artists: SpotifyApi.ArtistObjectSimplified[]) => {
+    const artistNames = artists.map((artist) => artist.name);
+    return artistNames.join(', ');
+  };
+
+  const simplifiedTracks = tracks.map((track) => ({
+    name: track.name,
+    artists: getArtistString(track.artists),
+    album: track.album.name,
+  }));
+
   return (
     <main className="flex flex-col justify-center items-center gap-20">
       <h2 className="text-3xl">{headerText}</h2>
+      <Chat simplifiedTracks={simplifiedTracks} />
       <TrackList tracks={tracks} />
       <ExportPlaylistButton headerText={headerText} uris={trackUris} />
     </main>

@@ -1,4 +1,5 @@
 import { getAccessToken } from '@/lib/spotify';
+import Chat from './(client)/(widgets)/(input)/Chat';
 
 export default async function Home() {
   const session = await getAccessToken();

@@ -1,18 +1,26 @@
 const baseURL = '/api/openai';
+import { getAccessToken } from '@/lib/spotify';
 
-export const getPlaylist = async (input: string) => {
+type SimplifiedTrack = {
+  name: string;
+  artists: string;
+  album: string;
+};
+
+export const streamResponse = async (tracks: SimplifiedTrack[]) => {
+  const session = await getAccessToken();
   const body = {
-    query: input,
+    tracks,
+    user: session?.user.name,
   };
 
   const options: RequestInit = {
     method: 'POST',
     body: JSON.stringify(body),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   };
 
-  const response = await fetch(baseURL, options);
-
-  const data = await response.json();
-
-  return data.data[0].message.content;
+  return fetch(baseURL, options);
 };
