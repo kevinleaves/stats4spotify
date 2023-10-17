@@ -1,4 +1,5 @@
 const baseURL = '/api/openai';
+import { getAccessToken } from '@/lib/spotify';
 
 type SimplifiedTrack = {
   name: string;
@@ -7,8 +8,10 @@ type SimplifiedTrack = {
 };
 
 export const streamResponse = async (tracks: SimplifiedTrack[]) => {
+  const session = await getAccessToken();
   const body = {
     tracks,
+    user: session?.user.name,
   };
 
   const options: RequestInit = {
