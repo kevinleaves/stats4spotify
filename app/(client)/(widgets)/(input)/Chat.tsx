@@ -14,17 +14,30 @@ function useUsersTopArtists() {
   });
 }
 
-export default function Chat() {
+type SimplifiedTrack = {
+  name: string;
+  artists: string;
+  album: string;
+};
+
+interface Props {
+  simplifiedTracks: SimplifiedTrack[];
+}
+
+export default function Chat({ simplifiedTracks }: Props) {
   const [isGeneratingResponse, setIsGeneratingResponse] = useState(false);
   const [results, setResults] = useState('');
 
-  async function handleSubmit(event: React.SyntheticEvent) {
+  async function handleSubmit(
+    event: React.SyntheticEvent,
+    simplifiedTracks: SimplifiedTrack[]
+  ) {
     // clear results on subsquent clicks
     setResults('');
     event.preventDefault();
     // disable the button to prevent users from sending a request while one is currently active
     setIsGeneratingResponse(true);
-    const res = await streamResponse();
+    const res = await streamResponse(simplifiedTracks);
 
     // double click does nothing because of our rate limited backend
     if (res.status === 429) {
@@ -48,9 +61,9 @@ export default function Chat() {
   }
 
   return (
-    <section className="w-full flex flex-col items-center">
+    <section className="w-1/2 md:w-3/4 flex flex-col items-center">
       <div className="whitespace-break-spaces w-full">{results}</div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => handleSubmit(e, simplifiedTracks)}>
         <div className="w-24"></div>
         <button
           type="submit"

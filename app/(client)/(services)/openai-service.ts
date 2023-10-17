@@ -1,13 +1,22 @@
 const baseURL = '/api/openai';
 
-export const streamResponse = async (input?: string) => {
+type SimplifiedTrack = {
+  name: string;
+  artists: string;
+  album: string;
+};
+
+export const streamResponse = async (tracks: SimplifiedTrack[]) => {
   const body = {
-    query: input,
+    tracks,
   };
 
   const options: RequestInit = {
     method: 'POST',
-    headers: {},
+    body: JSON.stringify(body),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   };
 
   return fetch(baseURL, options);
