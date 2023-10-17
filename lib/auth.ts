@@ -3,8 +3,7 @@ import SpotifyProvider from 'next-auth/providers/spotify';
 import { refreshAccessToken } from './spotify';
 import { JWT } from 'next-auth/jwt';
 
-const scope =
-  'user-top-read user-read-recently-played user-read-playback-position playlist-read-private playlist-read-collaborative playlist-modify-private playlist-modify-public streaming user-read-email user-read-private user-read-playback-state user-modify-playback-state user-library-read user-library-modify';
+const scopes = 'user-top-read user-read-recently-played playlist-modify-public';
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
@@ -12,7 +11,7 @@ export const authOptions: NextAuthOptions = {
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID ?? '',
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET ?? '',
-      authorization: { params: { scope } },
+      authorization: { params: { scopes } },
     }),
     // ...add more providers here
   ],
