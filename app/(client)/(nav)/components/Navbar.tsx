@@ -29,15 +29,11 @@ export default function Navbar({}: Props) {
     <nav className="flex gap-4 items-center justify-between sm:justify-normal w-full p-4 pr-0">
       <Link href={'/'}>SpotifyGPT</Link>
       <>
-        <Button
-          onClick={handleClick}
-          className="sm:hidden p-0 mx-0 "
-          variant="outlined"
-          color="success"
-        >
-          <MenuIcon fontSize="large" className="sm:hidden p-0 mx-0 " />
-        </Button>
-
+        <div className="sm:hidden p-0 mx-0 ">
+          <Button onClick={handleClick} variant="outlined" color="success">
+            <MenuIcon fontSize="large" />
+          </Button>
+        </div>
         <Menu open={open} onClose={handleClose} anchorEl={anchorEl}>
           <ul className="flex-col sm:gap-4">
             {links.map(({ id, link, label }) => (
