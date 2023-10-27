@@ -35,7 +35,7 @@ export default function Navbar({}: Props) {
           variant="outlined"
           color="success"
         >
-          <MenuIcon fontSize="large" />
+          <MenuIcon fontSize="large" className="sm:hidden p-0 mx-0 " />
         </Button>
 
         <Menu open={open} onClose={handleClose} anchorEl={anchorEl}>
