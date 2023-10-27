@@ -28,11 +28,11 @@ export default function TrackList({ tracks }: Props) {
 
   return (
     <AnimatePresence>
-      <ul className="flex flex-col gap-4">
+      <ul className="flex flex-col gap-4 px-4">
         {tracks?.map((track, index) => (
           <motion.li
             key={track.id}
-            className="flex gap-4"
+            className="flex gap-4 items-center"
             variants={variants}
             initial="hidden"
             animate="visible"
@@ -44,15 +44,15 @@ export default function TrackList({ tracks }: Props) {
               alt="a track image"
               width={50}
               height={50}
-              className="rounded-xl w-24"
+              className="w-20 h-20"
             />
-            <div className="flex justify-between w-full">
-              <div className="flex-col mr-">
-                <p className="text-xl font-semibold">{track.name}</p>
-                <p className="font-extralight">
+            <div className="flex justify-between w-full gap-2 items-center">
+              <div className="flex flex-col">
+                <p className="text-md md:text-xl font-semibold">{track.name}</p>
+                <p className="text-sm md:text-lg font-extralight">
                   {getArtistString(track.artists)}
                 </p>
-                <p className="font-extralight">
+                <p className="text-sm md:text-lg font-extralight">
                   BPM/Tempo: {Math.round(track.tempo)}
                 </p>
               </div>

@@ -61,9 +61,11 @@ export async function TracksPage({ searchParams }: Props) {
   }));
 
   return (
-    <main className="flex flex-col justify-center items-center gap-20">
-      <h2 className="text-3xl">{headerText}</h2>
+    <main className="flex flex-col justify-center items-center gap-4 sm:max-lg:gap-8">
       <Chat simplifiedTracks={simplifiedTracks} />
+      <h2 className="text-lg font-bold tracking-tighter lg:text-3xl">
+        {headerText}
+      </h2>
       <TrackList tracks={tracks} />
       <ExportPlaylistButton headerText={headerText} uris={trackUris} />
     </main>
