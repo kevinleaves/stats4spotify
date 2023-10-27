@@ -30,7 +30,7 @@ export default function ExportPlaylistButton({ headerText, uris }: Props) {
   };
 
   return (
-    <div className="flex justify-center h-12 w-48 items-center">
+    <div className="flex justify-center h-12 w-80 items-center">
       {isLoading ? (
         <LinearProgress
           sx={{
@@ -40,17 +40,21 @@ export default function ExportPlaylistButton({ headerText, uris }: Props) {
       ) : isPlaylistGenerated ? (
         <Link
           href={`${baseURL}/${playlistId}`}
-          className={'bg-blue-200  rounded-lg hover:underline p-4'}
+          className={
+            'bg-blue-400 rounded-lg hover:underline p-2 w-full text-center'
+          }
           target="_blank"
         >
-          view playlist
+          View playlist
         </Link>
       ) : (
         <button
-          className={'bg-green-600  rounded-lg hover:underline p-4'}
+          className={
+            'bg-green-600 rounded-lg hover:underline p-2 w-full text-center'
+          }
           onClick={() => exportPlaylist(headerText, uris)}
         >
-          create playlist
+          Create playlist
         </button>
       )}
     </div>
