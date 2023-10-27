@@ -7,7 +7,7 @@ interface Props {
 }
 export default function ArtistList({ artists }: Props) {
   return (
-    <ol className="grid grid-cols-3 grid-rows-3">
+    <ol className="grid grid-cols-2 md:grid-cols-3 grid-rows-3">
       {artists?.map((artist) => (
         <ArtistCard key={artist.id} artist={artist} />
       ))}
