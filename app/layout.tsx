@@ -34,17 +34,9 @@ export default async function RootLayout({
       <body className={inter.className}>
         <SessionProvider session={session}>
           <Providers>
-            <main className="flex flex-col w-full pt-0">
+            <main className="flex flex-col pt-0 px-4 pb-24">
               <Header>
-                <Navbar>
-                  <ul className="flex gap-4">
-                    {links.map(({ id, link, label }) => (
-                      <Link className={''} key={id} href={link}>
-                        {label}
-                      </Link>
-                    ))}
-                  </ul>
-                </Navbar>
+                <Navbar />
               </Header>
               {children}
             </main>

@@ -6,8 +6,9 @@ export default function AuthButton() {
   if (!session) {
     return (
       <>
-        not signed in <br />
-        <button onClick={() => signIn()}>sign in</button>
+        <button className={'sm:inline sm:w-20'} onClick={() => signIn()}>
+          Sign in
+        </button>
       </>
     );
   }
@@ -16,13 +17,13 @@ export default function AuthButton() {
 
   return (
     <>
-      {/* <Image src={user.image} width={50} height={50} /> */}
       <button
         onClick={() => {
           signOut({ callbackUrl: '/' });
         }}
+        className={'sm:inline sm:w-20'}
       >
-        sign out
+        Sign out
       </button>
     </>
   );
