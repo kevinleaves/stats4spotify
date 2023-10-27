@@ -1,18 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { streamResponse } from '../../(services)/openai-service';
-import { getUsersTopItems } from '@/lib/spotify';
-import { useQuery } from '@tanstack/react-query';
-import Loading from '../../tracks/top/loading';
 import LinearProgress from '@mui/material/LinearProgress';
-
-function useUsersTopArtists() {
-  // hook used to data fetch users top artists from a client component
-  return useQuery({
-    queryKey: ['topArtists'],
-    queryFn: () => getUsersTopItems('artists', 'short_term', 50),
-  });
-}
 
 type SimplifiedTrack = {
   name: string;
@@ -26,7 +15,11 @@ interface Props {
 
 export default function Chat({ simplifiedTracks }: Props) {
   const [isGeneratingResponse, setIsGeneratingResponse] = useState(false);
-  const [results, setResults] = useState('');
+  const [results, setResults] = useState(
+    "FantanoBot's response will show up here..."
+  );
+
+  const chatBoxRef = useRef<HTMLDivElement>(null);
 
   async function handleSubmit(
     event: React.SyntheticEvent,
@@ -53,6 +46,11 @@ export default function Chat({ simplifiedTracks }: Props) {
       done = doneReading;
       if (value != undefined) {
         setResults((prev) => prev + value);
+        // scroll to the bottom when new content is added
+        if (chatBoxRef.current) {
+          // type guard to prevent ts error for null ref
+          chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+        }
       }
     }
 
@@ -61,13 +59,20 @@ export default function Chat({ simplifiedTracks }: Props) {
   }
 
   return (
-    <section className="w-1/2 md:w-3/4 flex flex-col items-center">
-      <div className="whitespace-break-spaces w-full">{results}</div>
-      <form onSubmit={(e) => handleSubmit(e, simplifiedTracks)}>
-        <div className="w-24"></div>
+    <section className="md:w-5/6 lg:w-1/2 flex flex-col items-center gap-4">
+      <div
+        className="h-64 lg:h-80 p-4 whitespace-break-spaces w-full overflow-y-scroll rounded-xl bg-zinc-800"
+        ref={chatBoxRef}
+      >
+        <p className="text-sm leading-relaxed">{results}</p>
+      </div>
+      <form
+        className="w-80"
+        onSubmit={(e) => handleSubmit(e, simplifiedTracks)}
+      >
         <button
           type="submit"
-          className="justify-center items-center hover:underline hover mt-4 p-4 border-2 rounded-lg w-full"
+          className="justify-center items-center hover:underline hover mt-2 p-2 md:mt-4 md:p-4 rounded-lg w-full bg-green-900"
           disabled={isGeneratingResponse}
         >
           {isGeneratingResponse ? (
@@ -77,7 +82,7 @@ export default function Chat({ simplifiedTracks }: Props) {
               }}
             />
           ) : (
-            'click here to have spotifyGPT/fantanobot judge your music taste'
+            'Judge your music taste'
           )}
         </button>
       </form>
