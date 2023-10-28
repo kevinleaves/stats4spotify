@@ -1,6 +1,9 @@
 'use client';
 import { useState, useRef } from 'react';
-import { streamResponse } from '../../(services)/openai-service';
+import {
+  streamResponse,
+  demoStreamResponse,
+} from '../../(services)/openai-service';
 import LinearProgress from '@mui/material/LinearProgress';
 
 type SimplifiedTrack = {
@@ -11,9 +14,10 @@ type SimplifiedTrack = {
 
 interface Props {
   simplifiedTracks: SimplifiedTrack[];
+  demo: boolean;
 }
 
-export default function Chat({ simplifiedTracks }: Props) {
+export default function Chat({ simplifiedTracks, demo }: Props) {
   const [isGeneratingResponse, setIsGeneratingResponse] = useState(false);
   const [results, setResults] = useState(
     "FantanoBot's response will show up here..."
@@ -30,7 +34,15 @@ export default function Chat({ simplifiedTracks }: Props) {
     event.preventDefault();
     // disable the button to prevent users from sending a request while one is currently active
     setIsGeneratingResponse(true);
-    const res = await streamResponse(simplifiedTracks);
+
+    let res: Response | null = null;
+
+    // demo flag calls same route but with hardcoded data
+    if (!demo) {
+      res = await streamResponse(simplifiedTracks);
+    } else {
+      res = await demoStreamResponse(simplifiedTracks, 'this demo user');
+    }
 
     // double click does nothing because of our rate limited backend
     if (res.status === 429) {
