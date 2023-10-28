@@ -6,8 +6,10 @@ import { Inter } from 'next/font/google';
 import { SessionProvider } from './(providers)/SessionProvider';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Providers from './(providers)/QueryClientProvider';
+import MaterialThemeProvider from './(providers)/ThemeProvider';
 import Header from './(client)/(nav)/components/Header';
 import Navbar from './(client)/(nav)/components/Navbar';
+
 import { authOptions } from '@/lib/auth';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -32,17 +34,19 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SessionProvider session={session}>
-          <Providers>
-            <main className="flex flex-col pt-0 px-4 pb-24">
-              <Header>
-                <Navbar />
-              </Header>
-              {children}
-            </main>
-            <ReactQueryDevtools />
-          </Providers>
-        </SessionProvider>
+        <MaterialThemeProvider>
+          <SessionProvider session={session}>
+            <Providers>
+              <main className="flex flex-col pt-0 px-4 pb-24">
+                <Header>
+                  <Navbar />
+                </Header>
+                {children}
+              </main>
+              <ReactQueryDevtools />
+            </Providers>
+          </SessionProvider>
+        </MaterialThemeProvider>
       </body>
     </html>
   );
