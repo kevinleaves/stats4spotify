@@ -161,3 +161,34 @@ export async function addItemsToPlaylist(
     Promise.reject(err);
   }
 }
+
+export async function getSeveralTracks(
+  trackIds: string
+): Promise<SpotifyApi.MultipleTracksResponse> {
+  const { accessToken: token } = await getAccessToken();
+
+  if (!token) {
+    return;
+  }
+
+  try {
+    const searchParams = new URLSearchParams({
+      ids: trackIds,
+    }).toString();
+
+    const endpoint = `${baseEndpoint}/tracks/?${searchParams}`;
+
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const res = await fetch(endpoint, options);
+    return res.json();
+  } catch (err) {
+    console.log(err);
+    return Promise.reject(err);
+  }
+}
