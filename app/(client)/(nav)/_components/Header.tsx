@@ -2,7 +2,7 @@ import Link from 'next/link';
 interface Props {
   children: React.ReactNode;
 }
-import AuthButton from '../../(auth)/components/AuthButton';
+import AuthButton from '../../(auth)/_components/AuthButton';
 
 export default function Header({ children }: Props) {
   return (

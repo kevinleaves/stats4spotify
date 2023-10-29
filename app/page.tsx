@@ -1,7 +1,7 @@
 import Chat from './(client)/(widgets)/(input)/Chat';
 import { demoSongData } from './(data)/demoSongData.js';
 import { demoTrackData } from './(data)/demoTrackData';
-import TrackList from './(client)/tracks/components/TrackList';
+import TrackList from './(client)/tracks/_components/TrackList';
 
 export default async function Home() {
   return (
@@ -11,11 +11,13 @@ export default async function Home() {
           SpotifyGPT - Music Taste Analyzer
         </h1>
         <p className="bg-green-600 rounded-lg p-4 text-sm">
-          Discover and analyze your music preferences like never before. Our app
-          combines the magic of AI and the world of music to provide you with
-          personalized music taste reviews.
+          Discover and analyze your music preferences like never before. This
+          app combines the magic of AI and your Spotify library to provide you
+          with personalized music taste reviews.
         </p>
-        <h2 className="font-semibold text-xl">Check out the demo below!</h2>
+        <h2 className="font-semibold text-xl">
+          Check out the demo below! No login required.
+        </h2>
         <Chat simplifiedTracks={demoSongData} demo={true} />
         <h2 className="text-lg font-bold tracking-tighter lg:text-3xl">
           Top Tracks: last 4 weeks (sample)
@@ -29,7 +31,7 @@ export default async function Home() {
             <li>User Authentication</li>
             <li>Intuitive User Interface</li>
           </ul>
-          <p>Explore the world of music with us today!</p>
+          <p>Explore the world of music with today!</p>
         </div>
       </div>
     </main>

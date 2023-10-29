@@ -1,4 +1,4 @@
-import LinkList from '../../(common)/components/LinkList';
+import LinkList from '../../(common)/_components/LinkList';
 
 interface Link {
   id: number;

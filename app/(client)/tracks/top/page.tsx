@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
 import Loading from './loading';
-import TrackList from '../components/TrackList';
-import ExportPlaylistButton from '../components/ExportPlaylistButton';
-import useUserTop from '../hooks/useUserTop';
+import TrackList from '../_components/TrackList';
+import ExportPlaylistButton from '../_components/ExportPlaylistButton';
+import useUserTop from '../_hooks/useUserTop';
 import Chat from '../../(widgets)/(input)/Chat';
 
 interface Props {

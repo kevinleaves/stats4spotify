@@ -7,8 +7,8 @@ import { SessionProvider } from './(providers)/SessionProvider';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Providers from './(providers)/QueryClientProvider';
 import MaterialThemeProvider from './(providers)/ThemeProvider';
-import Header from './(client)/(nav)/components/Header';
-import Navbar from './(client)/(nav)/components/Navbar';
+import Header from './(client)/(nav)/_components/Header';
+import Navbar from './(client)/(nav)/_components/Navbar';
 
 import { authOptions } from '@/lib/auth';
 

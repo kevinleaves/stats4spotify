@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import Loading from './loading';
-import ArtistList from '../components/ArtistList';
-import useUserTop from '../../tracks/hooks/useUserTop';
+import ArtistList from '../_components/ArtistList';
+import useUserTop from '../../tracks/_hooks/useUserTop';
 
 interface Props {
   searchParams: { timeRange: 'short_term' | 'medium_term' | 'long_term' };

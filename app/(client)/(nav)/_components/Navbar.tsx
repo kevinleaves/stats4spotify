@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Button, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import AuthButton from '../../(auth)/components/AuthButton';
+import AuthButton from '../../(auth)/_components/AuthButton';
 
 interface Props {}
 const links = [
