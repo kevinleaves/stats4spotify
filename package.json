@@ -28,7 +28,8 @@
     "next-auth": "^4.23.2",
     "openai": "^4.10.0",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-hook-form": "^7.47.0"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^4.34.1",
