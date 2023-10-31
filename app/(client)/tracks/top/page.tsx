@@ -44,7 +44,7 @@ export async function TracksPage({ searchParams }: Props) {
   }
 
   const { tracks, trackUris } = await useUserTop(timeRange, 'tracks');
-  console.log(tracks, trackUris, 'in page');
+  // console.log(tracks, trackUris, 'in page');
 
   const getArtistString = (artists: SpotifyApi.ArtistObjectSimplified[]) => {
     const artistNames = artists.map((artist) => artist.name);

@@ -5,6 +5,14 @@ import { JWT } from 'next-auth/jwt';
 
 const baseEndpoint = 'https://api.spotify.com/v1';
 
+class ApiError extends Error {
+  constructor(message, status) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+  }
+}
+
 export async function getAccessToken() {
   const session = await getServerSession(authOptions);
 
@@ -75,18 +83,22 @@ export async function getUsersTopItems(
     };
 
     const res = await fetch(endpoint, options);
-
     //! getUsersTopItems returns empty because user doesn't have enough listening history to populate API call.
     if (!res.ok) {
-      throw new Error(
-        `Failed to fetch user's top items. Status: ${res.status}`
-      );
+      throw new ApiError(`Failed to fetch user's top items.`, res.status);
     }
     return res.json();
   } catch (err) {
     //! unhappy path
     console.error(err);
-    throw new Error("An error occurred while fetching user's top items");
+    if (err instanceof ApiError) {
+      console.error(err.message);
+      console.error(`Status Code: ${err.status}`);
+    } else {
+      console.error(err.message);
+      console.error("An error occurred while fetching user's top items");
+    }
+    throw err; // Re-throw the error for further handling if needed
   }
 }
 
