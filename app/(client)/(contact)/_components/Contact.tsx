@@ -1,6 +1,8 @@
 'use client';
+import { useState } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import { sendEmail } from 'lib/aws/sesClient.ts';
 
 type Inputs = {
@@ -16,10 +18,15 @@ export default function Contact({}: Props) {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<Inputs>();
 
+  const [formClicked, setFormClicked] = useState(false);
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    sendEmail(data);
+    setFormClicked(true);
+    await sendEmail(data);
+    reset();
   };
 
   return (
@@ -91,8 +98,18 @@ export default function Contact({}: Props) {
       {/* include validation with required or other standard HTML validation rules */}
 
       {/* errors will return when field validation fails  */}
-
-      <input type="submit" />
+      {formClicked ? (
+        <p className="font-bold text-green-600">
+          Thank you for submitting! You will be contacted shortly.
+        </p>
+      ) : (
+        <Button
+          type="submit"
+          className="border-solid border-2 hover:bg-green-600 hover:text-black"
+        >
+          Send me an email
+        </Button>
+      )}
     </form>
   );
 }
