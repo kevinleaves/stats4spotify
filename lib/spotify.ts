@@ -75,10 +75,18 @@ export async function getUsersTopItems(
     };
 
     const res = await fetch(endpoint, options);
+
+    //! getUsersTopItems returns empty because user doesn't have enough listening history to populate API call.
+    if (!res.ok) {
+      throw new Error(
+        `Failed to fetch user's top items. Status: ${res.status}`
+      );
+    }
     return res.json();
   } catch (err) {
-    console.log(err);
-    return Promise.reject(err);
+    //! unhappy path
+    console.error(err);
+    throw new Error("An error occurred while fetching user's top items");
   }
 }
 
@@ -87,20 +95,25 @@ export async function getTracksAudioFeatures(
 ): Promise<SpotifyApi.MultipleAudioFeaturesResponse> {
   const { accessToken: token } = await getAccessToken();
 
-  const searchParams = new URLSearchParams({
-    ids: trackIDs,
-  }).toString();
-  const endpoint = `${baseEndpoint}/audio-features/?${searchParams}`;
+  try {
+    const searchParams = new URLSearchParams({
+      ids: trackIDs,
+    }).toString();
+    const endpoint = `${baseEndpoint}/audio-features/?${searchParams}`;
 
-  const options = {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
 
-  const response = await fetch(endpoint, options);
-  return response.json();
+    const response = await fetch(endpoint, options);
+    return response.json();
+  } catch (err) {
+    console.error(err);
+    Promise.reject(err);
+  }
 }
 
 export async function createPlaylist(timeRange) {

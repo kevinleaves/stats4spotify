@@ -44,17 +44,14 @@ export async function TracksPage({ searchParams }: Props) {
   }
 
   const { tracks, trackUris } = await useUserTop(timeRange, 'tracks');
-
-  if (tracks === undefined) {
-    return <>Error: Tracks Not Found</>;
-  }
+  console.log(tracks, trackUris, 'in page');
 
   const getArtistString = (artists: SpotifyApi.ArtistObjectSimplified[]) => {
     const artistNames = artists.map((artist) => artist.name);
     return artistNames.join(', ');
   };
 
-  const simplifiedTracks = tracks.map((track) => ({
+  const simplifiedTracks = tracks?.map((track) => ({
     name: track.name,
     artists: getArtistString(track.artists),
     album: track.album.name,
@@ -62,12 +59,22 @@ export async function TracksPage({ searchParams }: Props) {
 
   return (
     <main className="flex flex-col justify-center items-center gap-4 sm:max-lg:gap-8">
-      <Chat simplifiedTracks={simplifiedTracks} demo={false} />
-      <h2 className="text-lg font-bold tracking-tighter lg:text-3xl">
-        {headerText}
-      </h2>
-      <TrackList tracks={tracks} />
-      <ExportPlaylistButton headerText={headerText} uris={trackUris} />
+      {tracks?.length === 0 ? (
+        <div className="w-full sm:w-1/2">
+          It seems that you haven't heard enough music to calculate any
+          favorites from it. Try another time range or listen to some more music
+          and try again later!
+        </div>
+      ) : (
+        <>
+          <Chat simplifiedTracks={simplifiedTracks} demo={false} />
+          <h2 className="text-lg font-bold tracking-tighter lg:text-3xl">
+            {headerText}
+          </h2>
+          <TrackList tracks={tracks} />
+          <ExportPlaylistButton headerText={headerText} uris={trackUris} />
+        </>
+      )}
     </main>
   );
 }
