@@ -36,9 +36,9 @@ export async function ArtistPage({ searchParams }: Props) {
     <main className="flex flex-col justify-center items-center gap-4 sm:max-lg:gap-8">
       {artists.length === 0 ? (
         <div className="flex flex-col items-center w-full sm:w-1/2">
-          It seems that you haven't heard enough music to calculate any
+          {`It seems that you haven't heard enough music to calculate any
           favorites from it. Try another time range or listen to some more music
-          and try again later!
+          and try again later!`}
         </div>
       ) : (
         <ArtistList artists={artists} />
