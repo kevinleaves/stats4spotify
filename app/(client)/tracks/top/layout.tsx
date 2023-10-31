@@ -1,4 +1,4 @@
-import LinkList from '../../(common)/components/LinkList';
+import LinkList from '../../(common)/_components/LinkList';
 
 interface Link {
   id: number;
@@ -18,7 +18,7 @@ export default async function TracksLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section>
+    <section className="">
       <nav className="flex justify-center p-4">
         <LinkList links={links} baseUrl={'/tracks/top/?timeRange='} />
       </nav>
