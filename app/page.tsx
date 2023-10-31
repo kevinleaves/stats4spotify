@@ -1,7 +1,8 @@
 import Chat from './(client)/(widgets)/(input)/Chat';
-import { demoSongData } from './(data)/demoSongData.js';
-import { demoTrackData } from './(data)/demoTrackData';
 import TrackList from './(client)/tracks/_components/TrackList';
+import { demoTrackData } from './(data)/demoTrackData';
+import { demoSongData } from './(data)/demoSongData.js';
+import Contact from './(client)/(contact)/_components/Contact';
 
 export default async function Home() {
   return (
@@ -15,7 +16,7 @@ export default async function Home() {
           app combines the magic of AI and your Spotify library to provide you
           with personalized music taste reviews.
         </p>
-        <h2 className="font-semibold text-xl">
+        <h2 className="font-semibold text-2xl">
           Check out the demo below! No login required.
         </h2>
         <Chat simplifiedTracks={demoSongData} demo={true} />
@@ -23,6 +24,10 @@ export default async function Home() {
           Top Tracks: last 4 weeks (sample)
         </h2>
         <TrackList tracks={demoTrackData} />
+        <h3 className="font-bold tracking-tight text-2xl">
+          Contact me to request to be added to the whitelist!
+        </h3>
+        <Contact />
         <div className="flex flex-col gap-4 font-light tracking-tight">
           <h3 className="font-semibold text-lg">Key Features:</h3>
           <ul>
