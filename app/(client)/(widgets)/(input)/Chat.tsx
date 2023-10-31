@@ -15,13 +15,12 @@ type SimplifiedTrack = {
 interface Props {
   simplifiedTracks: SimplifiedTrack[];
   demo: boolean;
+  placeholder: string;
 }
 
-export default function Chat({ simplifiedTracks, demo }: Props) {
+export default function Chat({ simplifiedTracks, demo, placeholder }: Props) {
   const [isGeneratingResponse, setIsGeneratingResponse] = useState(false);
-  const [results, setResults] = useState(
-    "FantanoBot's response will show up here..."
-  );
+  const [results, setResults] = useState(placeholder);
 
   const chatBoxRef = useRef<HTMLDivElement>(null);
 
@@ -84,7 +83,7 @@ export default function Chat({ simplifiedTracks, demo }: Props) {
       >
         <button
           type="submit"
-          className="justify-center items-center hover:underline hover mt-2 p-2 md:mt-4 md:p-4 rounded-lg w-full bg-green-900"
+          className="justify-center items-center hover:underline hover mt-2 p-2 md:mt-4 md:p-4 rounded-lg w-full bg-green-600"
           disabled={isGeneratingResponse}
         >
           {isGeneratingResponse ? (

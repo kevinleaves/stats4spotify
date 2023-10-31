@@ -11,15 +11,25 @@ export default async function Home() {
         <h1 className="font-bold text-3xl pt-4">
           SpotifyGPT - Music Taste Analyzer
         </h1>
-        <p className="bg-green-600 rounded-lg p-4 text-sm">
+        <p className="bg-green-600 rounded-lg p-4 text-sm w-full sm:w-1/2 text-zinc-200">
           Discover and analyze your music preferences like never before. This
           app combines the magic of AI and your Spotify library to provide you
-          with personalized music taste reviews.
+          with personalized music taste reviews. Create playlists from your top
+          tracks.
         </p>
-        <h2 className="font-semibold text-2xl">
+        <h2 className="font-semibold text-2xl bg-slate-800 rounded-lg p-2">
           Check out the demo below! No login required.
         </h2>
-        <Chat simplifiedTracks={demoSongData} demo={true} />
+        <h3 className="w-full sm:w-1/2 text-sm">
+          NOTE: This app is currently in developer mode, which means that you
+          will not be able to access your Spotify User Data unless you are added
+          to the whitelist. You can request to be added in the form below!
+        </h3>
+        <Chat
+          simplifiedTracks={demoSongData}
+          demo={true}
+          placeholder={`SpotifyGPT's response will show up here.. This sample response is using dummy data, not your own!`}
+        />
         <h2 className="text-lg font-bold tracking-tighter lg:text-3xl">
           Top Tracks: last 4 weeks (sample)
         </h2>

@@ -67,7 +67,11 @@ export async function TracksPage({ searchParams }: Props) {
         </div>
       ) : (
         <>
-          <Chat simplifiedTracks={simplifiedTracks} demo={false} />
+          <Chat
+            simplifiedTracks={simplifiedTracks}
+            demo={false}
+            placeholder={"FantanoBot's response will show up here..."}
+          />
           <h2 className="text-lg font-bold tracking-tighter lg:text-3xl">
             {headerText}
           </h2>
