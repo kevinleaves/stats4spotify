@@ -19,6 +19,11 @@ export default async function Home() {
         <h2 className="font-semibold text-2xl">
           Check out the demo below! No login required.
         </h2>
+        <Chat
+          simplifiedTracks={demoSongData}
+          demo={true}
+          placeholder={`SpotifyGPT's response will show up here.. This sample response is using dummy data, not your own!`}
+        />
         <Chat simplifiedTracks={demoSongData} demo={true} />
         <h2 className="text-lg font-bold tracking-tighter lg:text-3xl">
           Top Tracks: last 4 weeks (sample)
