@@ -50,7 +50,7 @@ export default function ExportPlaylistButton({ headerText, uris }: Props) {
       ) : (
         <button
           className={
-            'bg-green-600 rounded-lg hover:underline p-2 w-full text-center'
+            'bg-green-600 rounded-lg hover:underline p-2 w-full text-center text-white dark:text-black'
           }
           onClick={() => exportPlaylist(headerText, uris)}
         >

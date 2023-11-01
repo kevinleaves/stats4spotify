@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import Loading from './loading';
-import ArtistList from '../components/ArtistList';
-import useUserTop from '../../tracks/hooks/useUserTop';
+import ArtistList from '../_components/ArtistList';
+import useUserTop from '../../tracks/_hooks/useUserTop';
 
 interface Props {
   searchParams: { timeRange: 'short_term' | 'medium_term' | 'long_term' };
@@ -25,11 +25,24 @@ export async function ArtistPage({ searchParams }: Props) {
   const { timeRange } = searchParams;
 
   const { artists } = await useUserTop(timeRange, 'artists');
+  // console.log(artists, 'empty artists');
 
   // sort method mutates original array, so we copy it
   const sorted = artists?.slice().sort((a, b) => {
     return b.popularity - a.popularity;
   });
 
-  return <ArtistList artists={artists} />;
+  return (
+    <main className="flex flex-col justify-center items-center gap-4 sm:max-lg:gap-8">
+      {artists.length === 0 ? (
+        <div className="flex flex-col items-center w-full sm:w-1/2">
+          {`It seems that you haven't heard enough music to calculate any
+          favorites from it. Try another time range or listen to some more music
+          and try again later!`}
+        </div>
+      ) : (
+        <ArtistList artists={artists} />
+      )}
+    </main>
+  );
 }

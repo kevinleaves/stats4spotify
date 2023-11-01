@@ -3,7 +3,7 @@ import SpotifyProvider from 'next-auth/providers/spotify';
 import { refreshAccessToken } from './spotify';
 import { JWT } from 'next-auth/jwt';
 
-const scopes = 'user-top-read user-read-recently-played playlist-modify-public';
+const scope = 'user-top-read user-read-recently-played playlist-modify-public';
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
@@ -11,7 +11,7 @@ export const authOptions: NextAuthOptions = {
     SpotifyProvider({
       clientId: process.env.SPOTIFY_CLIENT_ID ?? '',
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET ?? '',
-      authorization: { params: { scopes } },
+      authorization: { params: { scope } },
     }),
     // ...add more providers here
   ],
@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
       }
       // if our token has expired, refresh the token
       if (Number(token.accessTokenExpiresAt) * 1000 < Date.now()) {
-        console.log(token, 'this token is expired');
+        // console.log(token, 'this token is expired');
         // refresh the token
         const refreshedToken: Awaitable<JWT> = await refreshAccessToken(token);
         return refreshedToken;

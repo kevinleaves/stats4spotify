@@ -5,6 +5,14 @@ import { JWT } from 'next-auth/jwt';
 
 const baseEndpoint = 'https://api.spotify.com/v1';
 
+class ApiError extends Error {
+  constructor(message, status) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+  }
+}
+
 export async function getAccessToken() {
   const session = await getServerSession(authOptions);
 
@@ -75,10 +83,22 @@ export async function getUsersTopItems(
     };
 
     const res = await fetch(endpoint, options);
+    //! getUsersTopItems returns empty because user doesn't have enough listening history to populate API call.
+    if (!res.ok) {
+      throw new ApiError(`Failed to fetch user's top items.`, res.status);
+    }
     return res.json();
   } catch (err) {
-    console.log(err);
-    return Promise.reject(err);
+    //! unhappy path
+    console.error(err);
+    if (err instanceof ApiError) {
+      console.error(err.message);
+      console.error(`Status Code: ${err.status}`);
+    } else {
+      console.error(err.message);
+      console.error("An error occurred while fetching user's top items");
+    }
+    throw err; // Re-throw the error for further handling if needed
   }
 }
 
@@ -87,20 +107,25 @@ export async function getTracksAudioFeatures(
 ): Promise<SpotifyApi.MultipleAudioFeaturesResponse> {
   const { accessToken: token } = await getAccessToken();
 
-  const searchParams = new URLSearchParams({
-    ids: trackIDs,
-  }).toString();
-  const endpoint = `${baseEndpoint}/audio-features/?${searchParams}`;
+  try {
+    const searchParams = new URLSearchParams({
+      ids: trackIDs,
+    }).toString();
+    const endpoint = `${baseEndpoint}/audio-features/?${searchParams}`;
 
-  const options = {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
 
-  const response = await fetch(endpoint, options);
-  return response.json();
+    const response = await fetch(endpoint, options);
+    return response.json();
+  } catch (err) {
+    console.error(err);
+    Promise.reject(err);
+  }
 }
 
 export async function createPlaylist(timeRange) {
@@ -159,5 +184,36 @@ export async function addItemsToPlaylist(
   } catch (err) {
     console.error(err);
     Promise.reject(err);
+  }
+}
+
+export async function getSeveralTracks(
+  trackIds: string
+): Promise<SpotifyApi.MultipleTracksResponse> {
+  const { accessToken: token } = await getAccessToken();
+
+  if (!token) {
+    return;
+  }
+
+  try {
+    const searchParams = new URLSearchParams({
+      ids: trackIds,
+    }).toString();
+
+    const endpoint = `${baseEndpoint}/tracks/?${searchParams}`;
+
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const res = await fetch(endpoint, options);
+    return res.json();
+  } catch (err) {
+    console.log(err);
+    return Promise.reject(err);
   }
 }

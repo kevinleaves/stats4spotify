@@ -4,11 +4,9 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Button, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import AuthButton from '../../(auth)/components/AuthButton';
+import AuthButton from '../../(auth)/_components/AuthButton';
 
-interface Props {
-  // children: React.ReactNode;
-}
+interface Props {}
 const links = [
   { id: 1, link: '/artists/top', label: 'Top Artists' },
   { id: 2, link: '/tracks/top', label: 'Top Tracks' },
@@ -30,8 +28,8 @@ export default function Navbar({}: Props) {
       <Link href={'/'}>SpotifyGPT</Link>
       <>
         <div className="sm:hidden p-0 mx-0 ">
-          <Button onClick={handleClick} variant="outlined" color="success">
-            <MenuIcon fontSize="large" />
+          <Button onClick={handleClick} variant="outlined" color="primary">
+            <MenuIcon fontSize="large" color={'primary'} />
           </Button>
         </div>
         <Menu open={open} onClose={handleClose} anchorEl={anchorEl}>

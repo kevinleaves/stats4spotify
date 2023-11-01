@@ -1,33 +1,16 @@
-import { getTracksAudioFeatures, getUsersTopItems } from '@/lib/spotify';
-
-interface Props {
-  timeRange: 'short_term' | 'medium_term' | 'long_term';
-  type: 'tracks' | 'artists';
-}
+import { getTracksAudioFeatures, getSeveralTracks } from '@/lib/spotify';
 
 /**
  * extract business logic for data fetching for list components into custom hook
- * @param timeRange: 'short_term' | 'medium_term' | 'long_term'"
- * @param type: 'tracks' | 'artists';
- * @returns
+ * @param trackIds: a comma separated string of Spotify Track Ids
+ * @returns an array of modified track objects that includes audio features metadata attached to the original track objects
  *
  */
-export default async function useUserTop(
-  timeRange: 'short_term' | 'medium_term' | 'long_term',
-  type: 'tracks' | 'artists'
-) {
+export default async function useGetSeveralTracks(trackIds: string) {
   try {
-    const response = await getUsersTopItems(type, timeRange, 50);
+    const response = await getSeveralTracks(trackIds);
 
-    if (type === 'artists') {
-      const { items: artists }: { items: SpotifyApi.ArtistObjectFull[] } =
-        response;
-      return {
-        artists,
-      };
-    }
-
-    const { items: tracks }: { items: SpotifyApi.TrackObjectFull[] } = response;
+    const { tracks }: { tracks: SpotifyApi.TrackObjectFull[] } = response;
 
     const getTrackIds = (tracks: SpotifyApi.TrackObjectFull[]) => {
       return tracks.map((tracks) => tracks.id).join(',');

@@ -1,6 +1,9 @@
 'use client';
 import { useState, useRef } from 'react';
-import { streamResponse } from '../../(services)/openai-service';
+import {
+  streamResponse,
+  demoStreamResponse,
+} from '../../(services)/openai-service';
 import LinearProgress from '@mui/material/LinearProgress';
 
 type SimplifiedTrack = {
@@ -11,13 +14,13 @@ type SimplifiedTrack = {
 
 interface Props {
   simplifiedTracks: SimplifiedTrack[];
+  demo: boolean;
+  placeholder: string;
 }
 
-export default function Chat({ simplifiedTracks }: Props) {
+export default function Chat({ simplifiedTracks, demo, placeholder }: Props) {
   const [isGeneratingResponse, setIsGeneratingResponse] = useState(false);
-  const [results, setResults] = useState(
-    "FantanoBot's response will show up here..."
-  );
+  const [results, setResults] = useState(placeholder);
 
   const chatBoxRef = useRef<HTMLDivElement>(null);
 
@@ -30,7 +33,15 @@ export default function Chat({ simplifiedTracks }: Props) {
     event.preventDefault();
     // disable the button to prevent users from sending a request while one is currently active
     setIsGeneratingResponse(true);
-    const res = await streamResponse(simplifiedTracks);
+
+    let res: Response | null = null;
+
+    // demo flag calls same route but with hardcoded data
+    if (!demo) {
+      res = await streamResponse(simplifiedTracks);
+    } else {
+      res = await demoStreamResponse(simplifiedTracks, 'this demo user');
+    }
 
     // double click does nothing because of our rate limited backend
     if (res.status === 429) {
@@ -61,7 +72,7 @@ export default function Chat({ simplifiedTracks }: Props) {
   return (
     <section className="md:w-5/6 lg:w-1/2 flex flex-col items-center gap-4">
       <div
-        className="h-64 lg:h-80 p-4 whitespace-break-spaces w-full overflow-y-scroll rounded-xl bg-zinc-800"
+        className="h-64 lg:h-80 p-4 whitespace-break-spaces w-full overflow-y-scroll rounded-xl bg-zinc-300 dark:bg-zinc-800 dark:text-white"
         ref={chatBoxRef}
       >
         <p className="text-sm leading-relaxed">{results}</p>
@@ -72,7 +83,7 @@ export default function Chat({ simplifiedTracks }: Props) {
       >
         <button
           type="submit"
-          className="justify-center items-center hover:underline hover mt-2 p-2 md:mt-4 md:p-4 rounded-lg w-full bg-green-900"
+          className="justify-center items-center hover:underline hover mt-2 p-2 md:mt-4 md:p-4 rounded-lg w-full text-white dark:text-black bg-green-600"
           disabled={isGeneratingResponse}
         >
           {isGeneratingResponse ? (
