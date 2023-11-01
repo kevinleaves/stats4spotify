@@ -23,7 +23,7 @@ export default function LinkList({ links, baseUrl }: Props) {
           <Link
             className={`${
               activeLink === param
-                ? 'font-bold text-green-400 tracking-tighter'
+                ? 'font-bold text-green-600 dark:text-green-400 tracking-tighter'
                 : 'font-extralight tracking-tighter'
             }`}
             href={`${baseUrl}${param}`}

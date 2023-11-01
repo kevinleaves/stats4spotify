@@ -11,13 +11,13 @@ export default async function Home() {
         <h1 className="font-bold text-3xl pt-4">
           SpotifyGPT - Music Taste Analyzer
         </h1>
-        <p className="bg-green-600 rounded-lg p-4 text-sm w-full sm:w-1/2 text-zinc-200 w-full sm:w-1/2 text-zinc-200">
+        <p className="bg-green-600 rounded-lg p-4 text-sm w-full sm:w-1/2 text-zinc-200">
           Discover and analyze your music preferences like never before. This
           app combines the magic of AI and your Spotify library to provide you
           with personalized music taste reviews. Create playlists from your top
           tracks.
         </p>
-        <h2 className="font-semibold text-2xl bg-slate-800 rounded-lg p-2 bg-slate-800 rounded-lg p-2">
+        <h2 className="font-semibold text-2xl text-black bg-zinc-300 dark:text-white dark:bg-zinc-800 rounded-lg p-2">
           Check out the demo below! No login required.
         </h2>
         <Chat
