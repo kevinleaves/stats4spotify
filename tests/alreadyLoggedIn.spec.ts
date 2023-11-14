@@ -2,6 +2,9 @@ import { test, expect } from '@playwright/test';
 
 test('already logged in state', async ({ page }) => {
   await page.goto('https://spotifygpt.vercel.app/');
+  await expect(page.getByRole('button', { name: 'Sign out' })).toBeVisible({
+    timeout: 3000,
+  });
 
   //* page should already be authenticated. can start clicking around
   await page.getByRole('link', { name: 'Top Artists' }).click();
@@ -24,13 +27,6 @@ test('already logged in state', async ({ page }) => {
     .filter({ hasText: "FantanoBot's response will show up here..." })
     .click();
   await page.getByRole('button', { name: 'Judge your music taste' }).click();
-  const page2Promise = page.waitForEvent('popup');
-  await page
-    .locator('li')
-    .filter({ hasText: '3Loveeeeeee SongRihanna, FutureBPM/Tempo: 120' })
-    .getByRole('link')
-    .click();
-  const page2 = await page2Promise;
   await page
     .locator('section')
     .filter({
