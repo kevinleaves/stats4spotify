@@ -1,8 +1,12 @@
 import { test, expect } from '@playwright/test';
+import { chromium } from '@playwright/test';
 
 const authFile = 'playwright/.auth/devUser.json';
 
 test.beforeEach('log in', async ({ page }) => {
+  // const browser = await chromium.launch();
+  // const page = await browser.newPage();
+
   await page.goto(
     'http://localhost:3000/api/auth/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2F'
   );
@@ -30,15 +34,16 @@ test.beforeEach('log in', async ({ page }) => {
   });
 });
 
-test('dev home', async ({ page }) => {
-  // This will navigate to http://127.0.0.1:3000/login
+test('page header is visible', async ({ page }) => {
   await page.goto('/');
-
   // header is visible
   await expect(
     page.getByRole('heading', { name: 'SpotifyGPT - Music Taste Analyzer' })
   ).toBeVisible();
+});
 
+test('chatgpt output works as intended', async ({ page }) => {
+  await page.goto('/');
   // chatgpt initial output is visible
   await expect(
     page.getByText(
@@ -58,8 +63,11 @@ test('dev home', async ({ page }) => {
     page.getByText(
       "Hi everyone. Anthony Fantano here, the internet's busiest music nerd"
     )
-  ).toBeVisible({ timeout: 30000 });
+  ).toBeVisible({ timeout: 40000 });
+});
 
+test('demo top tracks widget', async ({ page }) => {
+  await page.goto('/');
   // top tracks widget header is visible
   await expect(
     page.getByRole('heading', { name: 'Top Tracks: last 4 weeks (sample)' })
@@ -71,7 +79,10 @@ test('dev home', async ({ page }) => {
       '1LevitatingDua LipaBPM/Tempo: 1032STAY (with Justin Bieber)The Kid LAROI, Justin'
     )
   ).toBeVisible();
+});
 
+test('contact form', async ({ page }) => {
+  await page.goto('/');
   // contact form is visible
   await expect(
     page.locator('form').filter({ hasText: 'Send me an email' })

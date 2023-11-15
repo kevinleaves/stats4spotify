@@ -93,7 +93,6 @@ export default function Chat({ simplifiedTracks, demo, placeholder }: Props) {
               sx={{
                 width: '100%',
               }}
-              aria-busy={isGeneratingResponse}
             />
           ) : (
             'Judge your music taste'
