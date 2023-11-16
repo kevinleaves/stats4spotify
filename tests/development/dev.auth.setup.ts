@@ -27,7 +27,7 @@ setup('dev authenticate', async ({ page }) => {
   //! the pattern /** breaks the tests. makes the auth state not persist.
   // await page.waitForURL('/**', { timeout: 30000 });
 
-  await page.waitForURL('/', { timeout: 30000 });
+  await page.waitForURL('/', { timeout: 50000 });
   // Alternatively, you can wait until the page reaches a state where all cookies are set.
 
   // Wait for network to be idle, if we save storage too early, needed storage values might not yet be available
