@@ -41,8 +41,14 @@ export default defineConfig({
       testIgnore: /development\/.*\.setup\.ts/,
     },
     { name: 'devSetup', testMatch: /development\/.*\.setup\.ts/ },
-    { name: 'setup', testMatch: /.*\.setup\.ts/ },
-
+    {
+      name: 'dev e2e authed',
+      testDir: './tests/development',
+      dependencies: ['devSetup'],
+      use: {
+        storageState: 'playwright/.auth/devUser.json',
+      },
+    },
     {
       name: 'chromium',
       use: {
