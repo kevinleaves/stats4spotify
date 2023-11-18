@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import ListItem from '@mui/material/ListItem';
@@ -7,9 +9,19 @@ import classnames from 'classnames';
 
 interface Props {
   artist: SpotifyApi.ArtistObjectFull;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isModalOpen: boolean;
+  setSelectedArtist: React.Dispatch<
+    React.SetStateAction<SpotifyApi.ArtistObjectFull | null>
+  >;
 }
 
-export default function ArtistCard({ artist }: Props) {
+export default function ArtistCard({
+  artist,
+  setIsModalOpen,
+  isModalOpen,
+  setSelectedArtist,
+}: Props) {
   const {
     external_urls: { spotify: artistLink },
   } = artist;
@@ -24,7 +36,14 @@ export default function ArtistCard({ artist }: Props) {
   });
 
   return (
-    <ListItem className="flex flex-col justify-between w-full" key={artist.id}>
+    <ListItem
+      className="flex flex-col justify-between w-full hover:bg-slate-400"
+      key={artist.id}
+      onClick={() => {
+        setIsModalOpen(true);
+        setSelectedArtist(artist);
+      }}
+    >
       <div className="pb-2">
         <Image
           src={artist.images[1].url}
@@ -35,9 +54,6 @@ export default function ArtistCard({ artist }: Props) {
         />
       </div>
       <div className="min-h-16 text-lg">{artist.name}</div>
-      <p className="font-thin min-h-32 text-center">
-        {artist.genres.slice(0, 4).join(', ')}
-      </p>
       <div className="flex justify-between gap-4">
         <div className="flex items-center font-extralight text-sm">
           popularity: {artist.popularity}

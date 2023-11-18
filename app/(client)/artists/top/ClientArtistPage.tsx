@@ -38,7 +38,6 @@ export function ClientArtistPage({}: Props) {
       queryFn: () => {
         return getUsersTopItems('artists', timeRange, 50);
       },
-      // enabled: false,
     });
   }
 
