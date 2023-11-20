@@ -10,8 +10,8 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { getArtistRelatedArtists } from '@/lib/spotify';
 import ArtistCard from '../../artists/_components/ArtistCard';
+import TrackView from '../../tracks/_components/TrackView';
 
-ArtistCard;
 const style = {
   // position: 'absolute' as 'absolute',
   // top: '100%',
@@ -90,15 +90,20 @@ export default function ArtistDetailsModal({
         <Typography className="font-thin min-h-32">{`Your favorite tracks by this artist: ${timeRangeText}`}</Typography>
         <List
           disablePadding
-          sx={{ overflowY: 'auto', height: '8rem' }}
+          sx={{
+            overflowY: 'auto',
+            height: '12rem',
+          }}
           className="border border-solid rounded-lg bg-slate-50 p-2"
         >
           {onRepeat.map((track, idx) => (
-            <ListItem key={track.id} disablePadding disableGutters>
-              <Stack sx={{}} spacing={1} direction={'row'}>
-                <Typography>{idx + 1}.</Typography>
-                <Typography>{track.name}</Typography>
-              </Stack>
+            <ListItem key={track.id} sx={{ gap: 1 }} disableGutters>
+              <TrackView
+                index={idx}
+                track={track}
+                thumbnailHeight={50}
+                thumbnailWidth={50}
+              />
             </ListItem>
           ))}
         </List>
