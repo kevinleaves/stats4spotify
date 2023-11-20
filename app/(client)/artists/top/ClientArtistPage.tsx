@@ -7,7 +7,7 @@ import { getUsersTopItems } from '@/lib/spotify';
 import Loading from './loading';
 import ArtistList from '../_components/ArtistList';
 import { Typography } from '@mui/material';
-import ArtistDetailsModal from '../../cartists/_components/ArtistDetailsModal';
+import ArtistDetailsModal from '../_components/ArtistDetailsModal';
 import filterTracksByArtist from '@/lib/utils/filterTracksByArtist';
 
 interface Props {}

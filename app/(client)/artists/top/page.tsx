@@ -1,29 +1,20 @@
-import { Suspense } from 'react';
+'use client';
+
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
+import { getUsersTopItems } from '@/lib/spotify';
 import Loading from './loading';
 import ArtistList from '../_components/ArtistList';
-import useUserTop from '../../tracks/_hooks/useUserTop';
 import { Typography } from '@mui/material';
+import ArtistDetailsModal from '../_components/ArtistDetailsModal';
+import filterTracksByArtist from '@/lib/utils/filterTracksByArtist';
 
-interface Props {
-  searchParams: { timeRange: 'short_term' | 'medium_term' | 'long_term' };
-}
+interface Props {}
 
-export default async function ArtistPageWrapper(props: Props) {
-  // As of Next.js 13.4.1, modifying searchParams doesn't trigger the page's file-based suspense boundary to re-fallback.
-  // So to bypass that until there's a fix, we'll make our manage our own suspense boundary with params as a unique key.
-
-  // The "dialog" search param shouldn't trigger a re-fetch
-  const key = JSON.stringify({ ...props.searchParams });
-
-  return (
-    <Suspense key={key} fallback={<Loading />}>
-      <ArtistPage {...props} />
-    </Suspense>
-  );
-}
-
-export async function ArtistPage({ searchParams }: Props) {
-  const { timeRange } = searchParams;
+export default function ClientArtistPage({}: Props) {
+  const searchParams = useSearchParams();
+  const timeRange = searchParams.get('timeRange') ?? 'short_term';
 
   let headerText = 'Top Artists: last 4 weeks';
 
@@ -41,13 +32,46 @@ export async function ArtistPage({ searchParams }: Props) {
       break;
   }
 
-  const { artists } = await useUserTop(timeRange, 'artists');
-  // console.log(artists, 'empty artists');
+  function useUsersTopArtists() {
+    // hook used to data fetch users top artists from a client component
+    return useQuery({
+      queryKey: ['artists', timeRange],
+      queryFn: () => {
+        return getUsersTopItems('artists', timeRange, 50);
+      },
+    });
+  }
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedArtist, setSelectedArtist] =
+    useState<SpotifyApi.ArtistObjectFull | null>(null);
+
+  const { data, isError, error, isFetching } = useUsersTopArtists();
+
+  const tracksResponse = useQuery({
+    queryKey: [`Tracks: ${timeRange}`],
+    queryFn: () => getUsersTopItems('tracks', timeRange, 50),
+  });
+
+  if (isFetching || tracksResponse.isFetching) {
+    return <Loading />;
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>;
+  }
+
+  const { items: artists } = data;
 
   // sort method mutates original array, so we copy it
-  const sorted = artists?.slice().sort((a, b) => {
+  let sorted = artists?.slice().sort((a, b) => {
     return b.popularity - a.popularity;
   });
+
+  const onRepeat = filterTracksByArtist(
+    selectedArtist?.id,
+    tracksResponse.data.items
+  );
 
   return (
     <main className="flex flex-col justify-center items-center gap-4 sm:max-lg:gap-8">
@@ -66,15 +90,30 @@ export async function ArtistPage({ searchParams }: Props) {
       >
         {headerText}
       </Typography>
-      {artists.length === 0 ? (
+      {artists?.length === 0 ? (
         <div className="flex flex-col items-center w-full sm:w-1/2">
           {`It seems that you haven't heard enough music to calculate any
           favorites from it. Try another time range or listen to some more music
           and try again later!`}
         </div>
       ) : (
-        <ArtistList artists={artists} />
+        <ArtistList
+          artists={artists}
+          setIsModalOpen={setIsModalOpen}
+          isModalOpen={isModalOpen}
+          setSelectedArtist={setSelectedArtist}
+        />
       )}
+      {isModalOpen ? (
+        <ArtistDetailsModal
+          selectedArtist={selectedArtist}
+          setIsModalOpen={setIsModalOpen}
+          isModalOpen={isModalOpen}
+          setSelectedArtist={setSelectedArtist}
+          onRepeat={onRepeat}
+          timeRange={timeRange}
+        />
+      ) : null}
     </main>
   );
 }

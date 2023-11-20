@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { getArtistRelatedArtists } from '@/lib/spotify';
-import ArtistCard from '../../artists/_components/ArtistCard';
+import ArtistCard from './ArtistCard';
 import TrackView from '../../tracks/_components/TrackView';
 
 const style = {
