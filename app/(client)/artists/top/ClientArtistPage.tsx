@@ -8,12 +8,13 @@ import Loading from './loading';
 import ArtistList from '../_components/ArtistList';
 import { Typography } from '@mui/material';
 import ArtistDetailsModal from '../../cartists/_components/ArtistDetailsModal';
+import filterTracksByArtist from '@/lib/utils/filterTracksByArtist';
 
 interface Props {}
 
 export function ClientArtistPage({}: Props) {
   const searchParams = useSearchParams();
-  const timeRange = searchParams.get('timeRange');
+  const timeRange = searchParams.get('timeRange') ?? 'short_term';
 
   let headerText = 'Top Artists: last 4 weeks';
 
@@ -47,7 +48,12 @@ export function ClientArtistPage({}: Props) {
 
   const { data, isError, error, isFetching } = useUsersTopArtists();
 
-  if (isFetching) {
+  const tracksResponse = useQuery({
+    queryKey: [`Tracks: ${timeRange}`],
+    queryFn: () => getUsersTopItems('tracks', timeRange, 50),
+  });
+
+  if (isFetching || tracksResponse.isFetching) {
     return <Loading />;
   }
 
@@ -61,6 +67,11 @@ export function ClientArtistPage({}: Props) {
   let sorted = artists?.slice().sort((a, b) => {
     return b.popularity - a.popularity;
   });
+
+  const onRepeat = filterTracksByArtist(
+    selectedArtist?.id,
+    tracksResponse.data.items
+  );
 
   return (
     <main className="flex flex-col justify-center items-center gap-4 sm:max-lg:gap-8">
@@ -99,6 +110,8 @@ export function ClientArtistPage({}: Props) {
           setIsModalOpen={setIsModalOpen}
           isModalOpen={isModalOpen}
           setSelectedArtist={setSelectedArtist}
+          onRepeat={onRepeat}
+          timeRange={timeRange}
         />
       ) : null}
     </main>

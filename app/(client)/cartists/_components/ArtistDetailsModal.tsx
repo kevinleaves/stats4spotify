@@ -1,6 +1,12 @@
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Dialog from '@mui/material/Dialog';
+import {
+  List,
+  ListItem,
+  Divider,
+  Stack,
+  Box,
+  Typography,
+  Dialog,
+} from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { getArtistRelatedArtists } from '@/lib/spotify';
 import ArtistCard from '../../artists/_components/ArtistCard';
@@ -18,6 +24,7 @@ const style = {
   display: 'flex',
   flexDirection: 'column',
   p: 4,
+  gap: '1em',
 };
 
 interface Props {
@@ -27,6 +34,8 @@ interface Props {
   setSelectedArtist: React.Dispatch<
     React.SetStateAction<SpotifyApi.ArtistObjectFull | null>
   >;
+  onRepeat: SpotifyApi.TrackObjectFull[];
+  timeRange: string;
 }
 
 export default function ArtistDetailsModal({
@@ -34,13 +43,33 @@ export default function ArtistDetailsModal({
   setIsModalOpen,
   selectedArtist,
   setSelectedArtist,
+  onRepeat,
+  timeRange,
 }: Props) {
+  // fetch an artist's related artists
   const { data, isError, error, isFetching, refetch } = useQuery({
     queryKey: [selectedArtist?.name],
     queryFn: () => getArtistRelatedArtists(selectedArtist?.id),
     enabled: isModalOpen,
   });
 
+  let timeRangeText = 'last 4 weeks';
+
+  switch (timeRange) {
+    case 'short_term':
+      timeRangeText = 'last 4 weeks';
+      break;
+    case 'medium_term':
+      timeRangeText = 'last 6 months';
+      break;
+    case 'long_term':
+      timeRangeText = 'all time';
+      break;
+    default:
+      break;
+  }
+
+  console.log(timeRange, 'timeRange');
   return (
     <Dialog
       className="w-full h-full"
@@ -57,11 +86,32 @@ export default function ArtistDetailsModal({
         <Typography id="modal-modal-title" variant="h6" component="h2">
           {selectedArtist.name}
         </Typography>
-        <p className="font-thin min-h-32 text-center">
-          {selectedArtist.genres.slice(0, 4).join(', ')}
-        </p>
-        <Typography>Related Artists:</Typography>
-        <div className="flex">
+        <Divider component="div" role="presentation" />
+        <Typography className="font-thin min-h-32">{`Your favorite tracks by this artist: ${timeRangeText}`}</Typography>
+        <List
+          disablePadding
+          sx={{ overflowY: 'auto', height: '8rem' }}
+          className="border border-solid rounded-lg bg-slate-50 p-2"
+        >
+          {onRepeat.map((track, idx) => (
+            <ListItem key={track.id} disablePadding disableGutters>
+              <Stack sx={{}} spacing={1} direction={'row'}>
+                <Typography>{idx + 1}.</Typography>
+                <Typography>{track.name}</Typography>
+              </Stack>
+            </ListItem>
+          ))}
+        </List>
+        <Box className="font-thin min-h-32">
+          <Typography variant="h6">Genres:</Typography>
+          <Typography className="font-thin">
+            {selectedArtist.genres.slice(0, 4).join(', ')}
+          </Typography>
+        </Box>
+        <Divider component="div" role="presentation" sx={{ padding: '.5em' }} />
+        <Typography variant="h6">Related Artists:</Typography>
+
+        <div className="flex flex-col md:flex-row">
           {data?.artists.slice(0, 5).map((artist) => (
             <ArtistCard
               key={artist.id}
