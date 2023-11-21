@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { getUsersTopItems } from '@/lib/spotify';
 import Loading from './loading';
 import ArtistList from '../_components/ArtistList';
-import { Typography } from '@mui/material';
+import { Typography, Select, InputLabel, MenuItem } from '@mui/material';
 import ArtistDetailsModal from '../_components/ArtistDetailsModal';
 import filterTracksByArtist from '@/lib/utils/filterTracksByArtist';
 
@@ -45,6 +45,7 @@ export default function ClientArtistPage({}: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedArtist, setSelectedArtist] =
     useState<SpotifyApi.ArtistObjectFull | null>(null);
+  const [currentTab, setCurrentTab] = useState('top');
 
   const { data, isError, error, isFetching } = useUsersTopArtists();
 
@@ -61,12 +62,15 @@ export default function ClientArtistPage({}: Props) {
     return <span>Error: {error.message}</span>;
   }
 
-  const { items: artists } = data;
+  let { items: artists } = data;
 
+  let top = artists.slice();
   // sort method mutates original array, so we copy it
   let sorted = artists?.slice().sort((a, b) => {
     return b.popularity - a.popularity;
   });
+
+  artists = currentTab === 'top' ? top : sorted;
 
   const onRepeat = filterTracksByArtist(
     selectedArtist?.id,
@@ -90,6 +94,20 @@ export default function ClientArtistPage({}: Props) {
       >
         {headerText}
       </Typography>
+
+      <InputLabel sx={{ color: 'white' }} id="artists-sorted-by">
+        Arists sorted by:
+        <Select
+          labelId="artists-sorted-by"
+          value={currentTab}
+          onChange={(e) => setCurrentTab(e.target.value)}
+          sx={{ bgcolor: 'white', width: '8em', height: '2em', ml: '4px' }}
+        >
+          <MenuItem value="top">rank</MenuItem>
+          <MenuItem value="popularity">popularity</MenuItem>
+        </Select>
+      </InputLabel>
+
       {artists?.length === 0 ? (
         <div className="flex flex-col items-center w-full sm:w-1/2">
           {`It seems that you haven't heard enough music to calculate any
