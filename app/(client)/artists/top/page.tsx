@@ -108,20 +108,13 @@ export default function ClientArtistPage({}: Props) {
         </Select>
       </InputLabel>
 
-      {artists?.length === 0 ? (
-        <div className="flex flex-col items-center w-full sm:w-1/2">
-          {`It seems that you haven't heard enough music to calculate any
-          favorites from it. Try another time range or listen to some more music
-          and try again later!`}
-        </div>
-      ) : (
-        <ArtistList
-          artists={artists}
-          setIsModalOpen={setIsModalOpen}
-          isModalOpen={isModalOpen}
-          setSelectedArtist={setSelectedArtist}
-        />
-      )}
+      <ArtistList
+        artists={artists}
+        setIsModalOpen={setIsModalOpen}
+        isModalOpen={isModalOpen}
+        setSelectedArtist={setSelectedArtist}
+      />
+
       {isModalOpen ? (
         <ArtistDetailsModal
           selectedArtist={selectedArtist}
