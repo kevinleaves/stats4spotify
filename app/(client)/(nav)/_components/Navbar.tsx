@@ -5,11 +5,13 @@ import { useState } from 'react';
 import { Button, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AuthButton from '../../(auth)/_components/AuthButton';
+import AppBar from '@mui/material/AppBar';
 
 interface Props {}
 const links = [
   { id: 1, link: '/artists/top', label: 'Top Artists' },
   { id: 2, link: '/tracks/top', label: 'Top Tracks' },
+  { id: 3, link: '/tracks/recent', label: 'Recently played' },
 ];
 
 export default function Navbar({}: Props) {

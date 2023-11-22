@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import Loading from './loading';
 import {
   Table,
   TableContainer,
@@ -25,7 +26,7 @@ export default function RecentTracksPage({}: Props) {
   });
 
   if (response.isFetching) {
-    return <>loading...</>;
+    return <Loading />;
   }
 
   if (response.isError) {
@@ -38,52 +39,55 @@ export default function RecentTracksPage({}: Props) {
   };
 
   return (
-    <TableContainer
-      component={Paper}
-      sx={{ display: 'flex', flexDirection: 'column' }}
-      className="rounded-lg justify-center mt-4 px-2 md:px-4"
-    >
-      <Table
-        aria-label="recently played tracks table"
-        sx={{
-          [`& .${tableCellClasses.root}`]: {
-            borderBottom: 'none',
-          },
-        }}
+    <section className="mt-4 flex flex-col items-center">
+      <h1 className="text-xl font-bold">Recently Played Tracks</h1>
+      <TableContainer
+        component={Paper}
+        sx={{ display: 'flex', flexDirection: 'column' }}
+        className="rounded-lg justify-center mt-4 px-2 md:px-4"
       >
-        <TableHead>
-          <TableRow>
-            <TableCell className="text-lg p-2 py-0" sx={{ fontWeight: 700 }}>
-              Track
-            </TableCell>
-            <TableCell className="text-lg p-2 py-0" sx={{ fontWeight: 700 }}>
-              Artist(s)
-            </TableCell>
-            <TableCell className="text-lg p-2 py-0" sx={{ fontWeight: 700 }}>
-              Played At
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {response.data?.items.map((track) => (
-            <TableRow
-              key={track.track.id}
-              component={Link}
-              href={track.track.external_urls.spotify}
-              target="_blank"
-              hover
-            >
-              <TableCell padding="none">{track.track.name}</TableCell>
-              <TableCell padding="none">
-                {getArtistString(track.track.artists)}
+        <Table
+          aria-label="recently played tracks table"
+          sx={{
+            [`& .${tableCellClasses.root}`]: {
+              borderBottom: 'none',
+            },
+          }}
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell className="text-lg p-2 py-0" sx={{ fontWeight: 700 }}>
+                Track
               </TableCell>
-              <TableCell padding="none">
-                {new Date(track.played_at).toLocaleString()}
+              <TableCell className="text-lg p-2 py-0" sx={{ fontWeight: 700 }}>
+                Artist(s)
+              </TableCell>
+              <TableCell className="text-lg p-2 py-0" sx={{ fontWeight: 700 }}>
+                Played At
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {response.data?.items.map((track) => (
+              <TableRow
+                key={track.track.id}
+                component={Link}
+                href={track.track.external_urls.spotify}
+                target="_blank"
+                hover
+              >
+                <TableCell padding="none">{track.track.name}</TableCell>
+                <TableCell padding="none">
+                  {getArtistString(track.track.artists)}
+                </TableCell>
+                <TableCell padding="none">
+                  {new Date(track.played_at).toLocaleString()}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </section>
   );
 }

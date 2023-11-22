@@ -16,8 +16,7 @@ setup('dev authenticate', async ({ page }) => {
 
   //! adding waitForLoadState fixes flaky button press
   await page.waitForLoadState('networkidle'); // <-  until there are no network connections for at least 500 ms.
-  await page.getByTestId('login-button').click({ force: true });
-
+  await page.getByTestId('login-button').click();
   //! boilerplate
 
   //* Wait until the page receives the cookies.
