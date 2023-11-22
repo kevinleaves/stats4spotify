@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fab } from '@fortawesome/free-brands-svg-icons';
+import getArtistString from '@/lib/utils/getArtistString';
 
 interface Props {
   track: SpotifyApi.TrackObjectFull;
@@ -11,11 +12,6 @@ interface Props {
   thumbnailWidth: number;
   showTempo?: boolean;
 }
-
-const getArtistString = (artists: SpotifyApi.ArtistObjectSimplified[]) => {
-  const artistNames = artists.map((artist) => artist.name);
-  return artistNames.join(', ');
-};
 
 export default function TrackView({
   track,

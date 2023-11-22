@@ -5,6 +5,7 @@ import ExportPlaylistButton from '../_components/ExportPlaylistButton';
 import useUserTop from '../_hooks/useUserTop';
 import Chat from '../../(widgets)/(input)/Chat';
 import { Typography } from '@mui/material';
+import getArtistString from '@/lib/utils/getArtistString';
 
 interface Props {
   params: { slug: string };
@@ -45,12 +46,6 @@ export async function TracksPage({ searchParams }: Props) {
   }
 
   const { tracks, trackUris } = await useUserTop(timeRange, 'tracks');
-  // console.log(tracks, trackUris, 'in page');
-
-  const getArtistString = (artists: SpotifyApi.ArtistObjectSimplified[]) => {
-    const artistNames = artists.map((artist) => artist.name);
-    return artistNames.join(', ');
-  };
 
   const simplifiedTracks = tracks?.map((track) => ({
     name: track.name,

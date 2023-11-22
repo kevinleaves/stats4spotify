@@ -14,6 +14,7 @@ import {
   tableCellClasses,
 } from '@mui/material';
 import { getRecentlyPlayed } from '@/lib/spotify';
+import getArtistString from '@/lib/utils/getArtistString';
 
 interface Props {}
 
@@ -32,11 +33,6 @@ export default function RecentTracksPage({}: Props) {
   if (response.isError) {
     return <div>{response.error.message}</div>;
   }
-
-  const getArtistString = (artists: SpotifyApi.ArtistObjectSimplified[]) => {
-    const artistNames = artists.map((artist) => artist.name);
-    return artistNames.join(', ');
-  };
 
   return (
     <section className="mt-4 flex flex-col items-center">
