@@ -116,7 +116,7 @@ export default function ArtistDetailsModal({
         <Divider component="div" role="presentation" sx={{ padding: '.5em' }} />
         <Typography variant="h6">Related Artists:</Typography>
 
-        <div className="flex flex-col md:flex-row">
+        <div className="grid grid-cols-2 md:flex md:flex-row">
           {data?.artists.slice(0, 5).map((artist) => (
             <ArtistCard
               key={artist.id}
