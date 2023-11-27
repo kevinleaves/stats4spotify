@@ -29,5 +29,5 @@ export default withAuth(
 );
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ['/artists/top:path*', '/tracks/top/:path*'],
+  matcher: ['/artists/top:path*', '/tracks/:path*'],
 };
