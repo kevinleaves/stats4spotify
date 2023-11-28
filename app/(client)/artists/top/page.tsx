@@ -1,48 +1,130 @@
-import { Suspense } from 'react';
+'use client';
+
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
+import { getUsersTopItems } from '@/lib/spotify';
 import Loading from './loading';
 import ArtistList from '../_components/ArtistList';
-import useUserTop from '../../tracks/_hooks/useUserTop';
+import { Typography, Select, InputLabel, MenuItem } from '@mui/material';
+import ArtistDetailsModal from '../_components/ArtistDetailsModal';
+import filterTracksByArtist from '@/lib/utils/filterTracksByArtist';
 
-interface Props {
-  searchParams: { timeRange: 'short_term' | 'medium_term' | 'long_term' };
-}
+interface Props {}
 
-export default async function ArtistPageWrapper(props: Props) {
-  // As of Next.js 13.4.1, modifying searchParams doesn't trigger the page's file-based suspense boundary to re-fallback.
-  // So to bypass that until there's a fix, we'll make our manage our own suspense boundary with params as a unique key.
+export default function ClientArtistPage({}: Props) {
+  const searchParams = useSearchParams();
+  const timeRange = searchParams.get('timeRange') ?? 'short_term';
 
-  // The "dialog" search param shouldn't trigger a re-fetch
-  const key = JSON.stringify({ ...props.searchParams });
+  let headerText = 'Top Artists: last 4 weeks';
 
-  return (
-    <Suspense key={key} fallback={<Loading />}>
-      <ArtistPage {...props} />
-    </Suspense>
-  );
-}
+  switch (timeRange) {
+    case 'short_term':
+      headerText = 'Top Artists: last 4 weeks';
+      break;
+    case 'medium_term':
+      headerText = 'Top Artists: last 6 months';
+      break;
+    case 'long_term':
+      headerText = 'Top Artists: all time';
+      break;
+    default:
+      break;
+  }
 
-export async function ArtistPage({ searchParams }: Props) {
-  const { timeRange } = searchParams;
+  function useUsersTopArtists() {
+    // hook used to data fetch users top artists from a client component
+    return useQuery({
+      queryKey: ['artists', timeRange],
+      queryFn: () => {
+        return getUsersTopItems('artists', timeRange, 50);
+      },
+    });
+  }
 
-  const { artists } = await useUserTop(timeRange, 'artists');
-  // console.log(artists, 'empty artists');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedArtist, setSelectedArtist] =
+    useState<SpotifyApi.ArtistObjectFull | null>(null);
+  const [currentTab, setCurrentTab] = useState('top');
 
+  const { data, isError, error, isFetching } = useUsersTopArtists();
+
+  const tracksResponse = useQuery({
+    queryKey: [`Tracks: ${timeRange}`],
+    queryFn: () => getUsersTopItems('tracks', timeRange, 50),
+  });
+
+  if (isFetching || tracksResponse.isFetching) {
+    return <Loading />;
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>;
+  }
+
+  let { items: artists } = data;
+
+  let top = artists.slice();
   // sort method mutates original array, so we copy it
-  const sorted = artists?.slice().sort((a, b) => {
+  let sorted = artists?.slice().sort((a, b) => {
     return b.popularity - a.popularity;
   });
 
+  artists = currentTab === 'top' ? top : sorted;
+
+  const onRepeat = filterTracksByArtist(
+    selectedArtist?.id,
+    tracksResponse.data.items
+  );
+
   return (
     <main className="flex flex-col justify-center items-center gap-4 sm:max-lg:gap-8">
-      {artists.length === 0 ? (
-        <div className="flex flex-col items-center w-full sm:w-1/2">
-          {`It seems that you haven't heard enough music to calculate any
-          favorites from it. Try another time range or listen to some more music
-          and try again later!`}
-        </div>
-      ) : (
-        <ArtistList artists={artists} />
-      )}
+      <Typography
+        variant="h2"
+        sx={{
+          '@media (min-width: 1024px)': {
+            fontSize: '1.875rem',
+            lineHeight: '2.25rem',
+          },
+          fontSize: '1.125rem',
+          lineHeight: '1.75rem',
+          fontWeight: 700,
+          letterSpacing: '-0.05em',
+        }}
+      >
+        {headerText}
+      </Typography>
+
+      <InputLabel sx={{ color: 'white' }} id="artists-sorted-by">
+        Arists sorted by:
+        <Select
+          labelId="artists-sorted-by"
+          value={currentTab}
+          onChange={(e) => setCurrentTab(e.target.value)}
+          sx={{ bgcolor: 'white', width: '8em', height: '2em', ml: '4px' }}
+        >
+          <MenuItem value="top">rank</MenuItem>
+          <MenuItem value="popularity">popularity</MenuItem>
+        </Select>
+      </InputLabel>
+
+      <ArtistList
+        artists={artists}
+        setIsModalOpen={setIsModalOpen}
+        isModalOpen={isModalOpen}
+        setSelectedArtist={setSelectedArtist}
+      />
+
+      {isModalOpen ? (
+        <ArtistDetailsModal
+          selectedArtist={selectedArtist}
+          setIsModalOpen={setIsModalOpen}
+          isModalOpen={isModalOpen}
+          setSelectedArtist={setSelectedArtist}
+          onRepeat={onRepeat}
+          timeRange={timeRange}
+        />
+      ) : null}
     </main>
   );
 }

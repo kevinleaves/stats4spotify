@@ -29,7 +29,13 @@ export default function TrackList({ tracks }: Props) {
             animate="visible"
             custom={index}
           >
-            <TrackView track={track} index={index} />
+            <TrackView
+              track={track}
+              index={index}
+              thumbnailHeight={80}
+              thumbnailWidth={80}
+              showTempo={true}
+            />
           </motion.li>
         ))}
       </ul>

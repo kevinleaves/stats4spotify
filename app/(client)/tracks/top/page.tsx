@@ -4,6 +4,8 @@ import TrackList from '../_components/TrackList';
 import ExportPlaylistButton from '../_components/ExportPlaylistButton';
 import useUserTop from '../_hooks/useUserTop';
 import Chat from '../../(widgets)/(input)/Chat';
+import { Typography } from '@mui/material';
+import getArtistString from '@/lib/utils/getArtistString';
 
 interface Props {
   params: { slug: string };
@@ -44,12 +46,6 @@ export async function TracksPage({ searchParams }: Props) {
   }
 
   const { tracks, trackUris } = await useUserTop(timeRange, 'tracks');
-  // console.log(tracks, trackUris, 'in page');
-
-  const getArtistString = (artists: SpotifyApi.ArtistObjectSimplified[]) => {
-    const artistNames = artists.map((artist) => artist.name);
-    return artistNames.join(', ');
-  };
 
   const simplifiedTracks = tracks?.map((track) => ({
     name: track.name,
@@ -72,9 +68,21 @@ export async function TracksPage({ searchParams }: Props) {
             demo={false}
             placeholder={"FantanoBot's response will show up here..."}
           />
-          <h2 className="text-lg font-bold tracking-tighter lg:text-3xl">
+          <Typography
+            variant="h2"
+            sx={{
+              '@media (min-width: 1024px)': {
+                fontSize: '1.875rem',
+                lineHeight: '2.25rem',
+              },
+              fontSize: '1.125rem',
+              lineHeight: '1.75rem',
+              fontWeight: 700,
+              letterSpacing: '-0.05em',
+            }}
+          >
             {headerText}
-          </h2>
+          </Typography>
           <TrackList tracks={tracks} />
           <ExportPlaylistButton headerText={headerText} uris={trackUris} />
         </>

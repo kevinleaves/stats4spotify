@@ -85,6 +85,8 @@ export default function Chat({ simplifiedTracks, demo, placeholder }: Props) {
           type="submit"
           className="justify-center items-center hover:underline hover mt-2 p-2 md:mt-4 md:p-4 rounded-lg w-full text-white dark:text-black bg-green-600"
           disabled={isGeneratingResponse}
+          aria-describedby="judge-button"
+          aria-busy={isGeneratingResponse}
         >
           {isGeneratingResponse ? (
             <LinearProgress

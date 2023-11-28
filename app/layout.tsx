@@ -19,11 +19,6 @@ export const metadata: Metadata = {
   description: 'use AI to discover music',
 };
 
-const links = [
-  { id: 1, link: '/artists/top', label: 'Top Artists' },
-  { id: 2, link: '/tracks/top', label: 'Top Tracks' },
-];
-
 export default async function RootLayout({
   children,
 }: {

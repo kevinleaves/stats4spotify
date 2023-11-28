@@ -217,3 +217,87 @@ export async function getSeveralTracks(
     return Promise.reject(err);
   }
 }
+
+export async function getArtistRelatedArtists(
+  artistId: SpotifyApi.ArtistObjectFull['id']
+): Promise<SpotifyApi.ArtistObjectFull[]> {
+  const { accessToken: token } = await getAccessToken();
+
+  try {
+    const endpoint = `${baseEndpoint}/artists/${artistId}/related-artists`;
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await fetch(endpoint, options);
+    if (!response.ok) {
+      throw new ApiError(
+        `Failed to fetch artist's related artists.`,
+        response.status
+      );
+    }
+
+    return response.json();
+  } catch (err) {
+    //! unhappy path
+    console.error(err);
+    if (err instanceof ApiError) {
+      console.error(err.message);
+      console.error(`Status Code: ${err.status}`);
+    } else {
+      console.error(err.message);
+      console.error(
+        "An error occurred while fetching artist's related artists."
+      );
+    }
+    throw err; // Re-throw the error for further handling if needed
+  }
+}
+
+export async function getRecentlyPlayed(
+  limit: SpotifyApi.RecentlyPlayedParameterObject['limit'],
+  before: SpotifyApi.RecentlyPlayedParameterObject['before'],
+  after: SpotifyApi.RecentlyPlayedParameterObject['after']
+): Promise<SpotifyApi.ArtistObjectFull[]> {
+  const { accessToken: token } = await getAccessToken();
+
+  try {
+    const searchParams = new URLSearchParams({
+      limit,
+    }).toString();
+
+    const endpoint = `${baseEndpoint}/me/player/recently-played/?${searchParams}`;
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await fetch(endpoint, options);
+    if (!response.ok) {
+      throw new ApiError(
+        `Failed to fetch user's listening history`,
+        response.status
+      );
+    }
+
+    return response.json();
+  } catch (err) {
+    //! unhappy path
+    console.error(err);
+    if (err instanceof ApiError) {
+      console.error(err.message);
+      console.error(`Status Code: ${err.status}`);
+    } else {
+      console.error(err.message);
+      console.error(
+        "An error occurred while fetching user's listening history."
+      );
+    }
+    throw err; // Re-throw the error for further handling if needed
+  }
+}
