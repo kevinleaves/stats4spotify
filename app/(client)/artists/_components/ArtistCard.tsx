@@ -37,7 +37,7 @@ export default function ArtistCard({
 
   return (
     <ListItem
-      className="flex flex-col justify-between w-full hover:bg-slate-400"
+      className="flex flex-col justify-between w-full hover:bg-secondary"
       key={artist.id}
       onClick={() => {
         setIsModalOpen(true);

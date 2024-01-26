@@ -2,10 +2,12 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { Button, Menu, MenuItem } from '@mui/material';
+import { Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AuthButton from '../../(auth)/_components/AuthButton';
-import AppBar from '@mui/material/AppBar';
+import { Button } from '@/components/ui/button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { fab } from '@fortawesome/free-brands-svg-icons';
 
 interface Props {}
 const links = [
@@ -26,20 +28,27 @@ export default function Navbar({}: Props) {
   };
 
   return (
-    <nav className="flex gap-4 items-center justify-between sm:justify-normal w-full p-4 pr-0">
-      <Link href={'/'}>SpotifyGPT</Link>
+    <nav className="flex gap-4 items-center justify-between sm:justify-normal w-full py-4 pr-0">
+      <Button asChild variant={'outline'}>
+        <Link href={'/'}>
+          <FontAwesomeIcon className={'h-4 pr-4'} icon={fab.faSpotify} />
+          SpotifyGPT
+        </Link>
+      </Button>
       <>
         <div className="sm:hidden p-0 mx-0 ">
-          <Button onClick={handleClick} variant="outlined" color="primary">
+          <Button onClick={handleClick} variant="ghost" color="primary">
             <MenuIcon fontSize="large" color={'primary'} />
           </Button>
         </div>
         <Menu open={open} onClose={handleClose} anchorEl={anchorEl}>
-          <ul className="flex-col sm:gap-4">
+          <ul className="flex flex-col items-center sm:gap-4">
             {links.map(({ id, link, label }) => (
-              <MenuItem key={id} href={link} component={'a'}>
-                {label}
-              </MenuItem>
+              <Button asChild key={id} variant={'ghost'} className="w-full">
+                <MenuItem href={link} component={'a'}>
+                  {label}
+                </MenuItem>
+              </Button>
             ))}
           </ul>
           <MenuItem>
@@ -47,11 +56,13 @@ export default function Navbar({}: Props) {
           </MenuItem>
         </Menu>
       </>
-      <ul className="sm:flex sm:gap-4 hidden">
+      <ul className="sm:flex hidden">
         {links.map(({ id, link, label }) => (
-          <Link className={''} key={id} href={link}>
-            {label}
-          </Link>
+          <Button asChild variant={'link'} key={id}>
+            <Link className={''} href={link}>
+              {label}
+            </Link>
+          </Button>
         ))}
       </ul>
     </nav>

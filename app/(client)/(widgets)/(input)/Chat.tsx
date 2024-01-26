@@ -5,6 +5,7 @@ import {
   demoStreamResponse,
 } from '../../(services)/openai-service';
 import LinearProgress from '@mui/material/LinearProgress';
+import { Button } from '@/components/ui/button';
 
 type SimplifiedTrack = {
   name: string;
@@ -72,7 +73,7 @@ export default function Chat({ simplifiedTracks, demo, placeholder }: Props) {
   return (
     <section className="md:w-5/6 lg:w-1/2 flex flex-col items-center gap-4">
       <div
-        className="h-64 lg:h-80 p-4 whitespace-break-spaces w-full overflow-y-scroll rounded-xl bg-zinc-300 dark:bg-zinc-800 dark:text-white"
+        className="h-64 lg:h-80 p-4 whitespace-break-spaces w-full overflow-y-scroll rounded-xl bg-secondary dark:bg-zinc-800 dark:text-white"
         ref={chatBoxRef}
       >
         <p className="text-sm leading-relaxed">{results}</p>
@@ -81,7 +82,7 @@ export default function Chat({ simplifiedTracks, demo, placeholder }: Props) {
         className="w-80"
         onSubmit={(e) => handleSubmit(e, simplifiedTracks)}
       >
-        <button
+        <Button
           type="submit"
           className="justify-center items-center hover:underline hover mt-2 p-2 md:mt-4 md:p-4 rounded-lg w-full text-white dark:text-black bg-green-600"
           disabled={isGeneratingResponse}
@@ -97,7 +98,7 @@ export default function Chat({ simplifiedTracks, demo, placeholder }: Props) {
           ) : (
             'Judge your music taste'
           )}
-        </button>
+        </Button>
       </form>
     </section>
   );
