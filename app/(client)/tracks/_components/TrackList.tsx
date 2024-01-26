@@ -19,7 +19,7 @@ export default function TrackList({ tracks }: Props) {
 
   return (
     <AnimatePresence>
-      <ul className="flex flex-col gap-4 px-4">
+      <ul className="flex flex-col gap-4 px-4 max-h-96 overflow-y-auto">
         {tracks?.map((track, index) => (
           <motion.li
             key={track.id}
@@ -34,7 +34,7 @@ export default function TrackList({ tracks }: Props) {
               index={index}
               thumbnailHeight={80}
               thumbnailWidth={80}
-              showTempo={true}
+              showTempo={false}
             />
           </motion.li>
         ))}

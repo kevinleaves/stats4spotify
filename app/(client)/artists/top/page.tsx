@@ -95,7 +95,7 @@ export default function ClientArtistPage({}: Props) {
         {headerText}
       </Typography>
 
-      <InputLabel sx={{ color: 'white' }} id="artists-sorted-by">
+      <InputLabel sx={{ color: 'black' }} id="artists-sorted-by">
         Arists sorted by:
         <Select
           labelId="artists-sorted-by"

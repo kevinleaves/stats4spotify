@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { createPlaylist, addItemsToPlaylist } from '@/lib/spotify';
 import LinearProgress from '@mui/material/LinearProgress';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 interface Props {
   headerText: string;
@@ -38,24 +39,26 @@ export default function ExportPlaylistButton({ headerText, uris }: Props) {
           }}
         />
       ) : isPlaylistGenerated ? (
-        <Link
-          href={`${baseURL}/${playlistId}`}
-          className={
-            'bg-blue-400 rounded-lg hover:underline p-2 w-full text-center'
-          }
-          target="_blank"
-        >
-          View playlist
-        </Link>
+        <Button asChild variant={'default'}>
+          <Link
+            href={`${baseURL}/${playlistId}`}
+            className={
+              'bg-blue-400 rounded-lg hover:underline p-2 w-full text-center'
+            }
+            target="_blank"
+          >
+            View playlist
+          </Link>
+        </Button>
       ) : (
-        <button
+        <Button
           className={
             'bg-green-600 rounded-lg hover:underline p-2 w-full text-center text-white dark:text-black'
           }
           onClick={() => exportPlaylist(headerText, uris)}
         >
           Create playlist
-        </button>
+        </Button>
       )}
     </div>
   );

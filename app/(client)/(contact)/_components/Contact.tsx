@@ -2,8 +2,8 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import { sendEmail } from 'lib/aws/sesClient.ts';
+import { Button } from '@/components/ui/button';
 
 type Inputs = {
   email: string;
