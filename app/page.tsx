@@ -33,7 +33,11 @@ export default async function Home() {
         <h2 className="scroll-m-20 text-3xl font-bold tracking-tighter lg:text-4xl">
           Top Tracks: last 4 weeks (sample)
         </h2>
-        <TrackList tracks={demoTrackData} />
+        <TrackList
+          tracks={demoTrackData}
+          trackViewVariant="default"
+          variant="default"
+        />
         <h2 className="font-bold tracking-tight text-3xl lg:text-4xl">
           Contact me to request to be added to the whitelist!
         </h2>

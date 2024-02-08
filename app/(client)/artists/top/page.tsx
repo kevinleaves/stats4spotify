@@ -9,6 +9,8 @@ import ArtistList from '../_components/ArtistList';
 import { Typography, Select, InputLabel, MenuItem } from '@mui/material';
 import ArtistDetailsModal from '../_components/ArtistDetailsModal';
 import filterTracksByArtist from '@/lib/utils/filterTracksByArtist';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 
 interface Props {}
 
@@ -46,6 +48,7 @@ export default function ClientArtistPage({}: Props) {
   const [selectedArtist, setSelectedArtist] =
     useState<SpotifyApi.ArtistObjectFull | null>(null);
   const [currentTab, setCurrentTab] = useState('top');
+  const [isGridExpanded, setIsGridExpanded] = useState(true);
 
   const { data, isError, error, isFetching } = useUsersTopArtists();
 
@@ -108,11 +111,22 @@ export default function ClientArtistPage({}: Props) {
         </Select>
       </InputLabel>
 
+      <div className="hidden md:flex md:gap-2">
+        <Checkbox
+          id="artist-grid-toggle"
+          onCheckedChange={() => {
+            setIsGridExpanded(!isGridExpanded);
+          }}
+          defaultChecked={isGridExpanded}
+        ></Checkbox>
+        <Label htmlFor="artist-grid-toggle">Expand Grid View</Label>
+      </div>
       <ArtistList
         artists={artists}
         setIsModalOpen={setIsModalOpen}
         isModalOpen={isModalOpen}
         setSelectedArtist={setSelectedArtist}
+        variant={isGridExpanded ? 'expanded' : 'condensed'}
       />
 
       {isModalOpen ? (

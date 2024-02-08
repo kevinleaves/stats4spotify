@@ -31,8 +31,9 @@ export default function ArtistCard({
   const imageClassName = classnames({
     [`max-w-[${maxW}px]`]: true,
     'max-h-80': true,
+    'max-w-80': true,
     // 'object-fit-contain': true,
-    'w-auto': true,
+    // 'w-auto': true,
   });
 
   return (
@@ -48,8 +49,8 @@ export default function ArtistCard({
         <Image
           src={artist.images[1].url}
           alt={'spotify artist image'}
-          width={320}
-          height={320}
+          width={180}
+          height={180}
           className={imageClassName}
         />
       </div>

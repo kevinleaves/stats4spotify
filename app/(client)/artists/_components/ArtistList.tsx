@@ -1,19 +1,26 @@
 import ArtistCard from './ArtistCard';
 
-interface Props {
+interface ArtistListProps {
   artists: SpotifyApi.ArtistObjectFull[] | undefined;
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedArtist: React.Dispatch<
     React.SetStateAction<SpotifyApi.ArtistObjectFull | null>
   >;
+  variant: 'expanded' | 'condensed';
 }
+const ARTIST_LIST_VARIANTS = {
+  expanded: `grid grid-cols-2 md:grid-cols-6 `,
+  condensed: `grid grid-cols-2 md:grid-cols-3 `,
+};
+
 export default function ArtistList({
   artists,
   setIsModalOpen,
   isModalOpen,
   setSelectedArtist,
-}: Props) {
+  variant,
+}: ArtistListProps) {
   if (artists?.length === 0) {
     return (
       <div className="flex flex-col items-center w-full sm:w-1/2">
@@ -23,8 +30,9 @@ export default function ArtistList({
       </div>
     );
   }
+
   return (
-    <ol className="grid grid-cols-2 md:grid-cols-3 grid-rows-3">
+    <ol className={ARTIST_LIST_VARIANTS[variant]}>
       {artists?.map((artist) => (
         <ArtistCard
           key={artist.id}

@@ -6,6 +6,17 @@ import useUserTop from '../_hooks/useUserTop';
 import Chat from '../../(widgets)/(input)/Chat';
 import { Typography } from '@mui/material';
 import getArtistString from '@/lib/utils/getArtistString';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { OpenInNewWindowIcon } from '@radix-ui/react-icons';
 
 interface Props {
   params: { slug: string };
@@ -29,21 +40,23 @@ export default async function TracksPageWrapper(props: Props) {
 export async function TracksPage({ searchParams }: Props) {
   const { timeRange } = searchParams;
 
-  let headerText = 'Top Tracks: last 4 weeks';
+  let timeRangeSuffix = '';
 
   switch (timeRange) {
     case 'short_term':
-      headerText = 'Top Tracks: last 4 weeks';
+      timeRangeSuffix = 'last 4 weeks';
       break;
     case 'medium_term':
-      headerText = 'Top Tracks: last 6 months';
+      timeRangeSuffix = 'last 6 months';
       break;
     case 'long_term':
-      headerText = 'Top Tracks: all time';
+      timeRangeSuffix = 'all time';
       break;
     default:
       break;
   }
+
+  let headerText = `Top Tracks: ${timeRangeSuffix}`;
 
   const { tracks, trackUris } = await useUserTop(timeRange, 'tracks');
 
@@ -63,6 +76,48 @@ export async function TracksPage({ searchParams }: Props) {
         </div>
       ) : (
         <>
+          <Dialog>
+            <DialogTrigger>
+              <Button>
+                View List &nbsp; <OpenInNewWindowIcon />
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>
+                  <Typography
+                    variant="h2"
+                    sx={{
+                      '@media (min-width: 1024px)': {
+                        fontSize: '1.875rem',
+                        lineHeight: '2.25rem',
+                      },
+                      fontSize: '1.125rem',
+                      lineHeight: '1.75rem',
+                      fontWeight: 700,
+                      letterSpacing: '-0.05em',
+                    }}
+                  >
+                    {headerText}
+                  </Typography>
+                </DialogTitle>
+                <DialogDescription>
+                  Your most played tracks: {timeRangeSuffix}.
+                </DialogDescription>
+              </DialogHeader>
+              <TrackList
+                tracks={tracks}
+                trackViewVariant="compact"
+                variant="default"
+              />
+              <DialogFooter className="flex sm:justify-center">
+                <ExportPlaylistButton
+                  headerText={headerText}
+                  uris={trackUris}
+                />
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
           <Chat
             simplifiedTracks={simplifiedTracks}
             demo={false}
@@ -83,7 +138,11 @@ export async function TracksPage({ searchParams }: Props) {
           >
             {headerText}
           </Typography>
-          <TrackList tracks={tracks} />
+          <TrackList
+            tracks={tracks}
+            trackViewVariant="compact"
+            variant="compact"
+          />
           <ExportPlaylistButton headerText={headerText} uris={trackUris} />
         </>
       )}
