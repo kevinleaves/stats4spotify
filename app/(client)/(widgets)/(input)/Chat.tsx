@@ -71,9 +71,9 @@ export default function Chat({ simplifiedTracks, demo, placeholder }: Props) {
   }
 
   return (
-    <section className="md:w-5/6 lg:w-1/2 flex flex-col items-center gap-4">
+    <section className=" w-full flex flex-col items-center gap-4">
       <div
-        className="h-64 lg:h-80 p-4 whitespace-break-spaces w-full overflow-y-scroll rounded-xl bg-secondary dark:bg-zinc-800 dark:text-white"
+        className="h-52 lg:h-64 p-4 whitespace-break-spaces md:w-5/6 lg:w-1/2 overflow-y-scroll rounded-xl bg-secondary dark:bg-zinc-800 dark:text-white"
         ref={chatBoxRef}
       >
         <p className="text-sm leading-relaxed">{results}</p>

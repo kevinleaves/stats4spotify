@@ -8,7 +8,7 @@ export default function AuthButton() {
       <>
         <Button
           className={'sm:inline  items-start'}
-          onClick={() => signIn()}
+          onClick={() => signIn(undefined, { callbackUrl: '/tracks/top' })}
           variant={'outline'}
         >
           Sign in

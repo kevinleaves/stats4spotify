@@ -69,7 +69,7 @@ export default function ArtistDetailsModal({
       break;
   }
 
-  console.log(timeRange, 'timeRange');
+  // console.log(timeRange, 'timeRange');
   return (
     <Dialog
       className="w-full h-full"
@@ -92,18 +92,13 @@ export default function ArtistDetailsModal({
           disablePadding
           sx={{
             overflowY: 'auto',
-            height: '12rem',
+            height: '24rem',
           }}
           className="border border-solid rounded-lg bg-slate-50 p-2"
         >
           {onRepeat.map((track, idx) => (
             <ListItem key={track.id} sx={{ gap: 1 }} disableGutters>
-              <TrackView
-                index={idx}
-                track={track}
-                thumbnailHeight={50}
-                thumbnailWidth={50}
-              />
+              <TrackView index={idx} track={track} variant="compact" />
             </ListItem>
           ))}
         </List>
