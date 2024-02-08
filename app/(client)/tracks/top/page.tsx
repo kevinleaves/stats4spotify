@@ -83,7 +83,11 @@ export async function TracksPage({ searchParams }: Props) {
           >
             {headerText}
           </Typography>
-          <TrackList tracks={tracks} />
+          <TrackList
+            tracks={tracks}
+            trackViewVariant="compact"
+            variant="compact"
+          />
           <ExportPlaylistButton headerText={headerText} uris={trackUris} />
         </>
       )}

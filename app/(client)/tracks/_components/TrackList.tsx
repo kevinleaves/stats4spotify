@@ -2,11 +2,17 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import TrackView from './TrackView';
 
-interface Props {
+interface TrackListProps {
   tracks: SpotifyApi.TrackObjectFull[] | undefined;
+  trackViewVariant: 'default' | 'compact';
+  variant: 'default' | 'compact';
 }
 
-export default function TrackList({ tracks }: Props) {
+export default function TrackList({
+  tracks,
+  trackViewVariant = 'default',
+  variant = 'default',
+}: TrackListProps) {
   const variants = {
     visible: (i: number) => ({
       opacity: 1,
@@ -17,9 +23,14 @@ export default function TrackList({ tracks }: Props) {
     hidden: { opacity: 0 },
   };
 
+  const TRACK_LIST_VARIANTS = {
+    default: `flex flex-col gap-4 px-4 max-h-[80vh] overflow-y-auto`,
+    compact: `flex flex-col gap-4 px-4 max-h-96 overflow-y-auto`,
+  };
+
   return (
     <AnimatePresence>
-      <ul className="flex flex-col gap-4 px-4 max-h-96 overflow-y-auto">
+      <ul className={TRACK_LIST_VARIANTS[variant]} role="list">
         {tracks?.map((track, index) => (
           <motion.li
             key={track.id}
@@ -28,13 +39,13 @@ export default function TrackList({ tracks }: Props) {
             initial="hidden"
             animate="visible"
             custom={index}
+            role="listitem"
           >
             <TrackView
               track={track}
               index={index}
-              thumbnailHeight={80}
-              thumbnailWidth={80}
               showTempo={false}
+              variant={trackViewVariant}
             />
           </motion.li>
         ))}
