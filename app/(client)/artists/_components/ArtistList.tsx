@@ -10,8 +10,8 @@ interface ArtistListProps {
   variant: 'expanded' | 'condensed';
 }
 const ARTIST_LIST_VARIANTS = {
-  expanded: `grid grid-cols-2 md:grid-cols-6 grid-rows-3`,
-  condensed: `grid grid-cols-2 md:grid-cols-3 grid-rows-3`,
+  expanded: `grid grid-cols-2 md:grid-cols-6 `,
+  condensed: `grid grid-cols-2 md:grid-cols-3 `,
 };
 
 export default function ArtistList({

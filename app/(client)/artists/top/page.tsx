@@ -48,7 +48,7 @@ export default function ClientArtistPage({}: Props) {
   const [selectedArtist, setSelectedArtist] =
     useState<SpotifyApi.ArtistObjectFull | null>(null);
   const [currentTab, setCurrentTab] = useState('top');
-  const [isGridExpanded, setIsGridExpanded] = useState(false);
+  const [isGridExpanded, setIsGridExpanded] = useState(true);
 
   const { data, isError, error, isFetching } = useUsersTopArtists();
 
