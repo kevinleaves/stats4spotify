@@ -218,6 +218,8 @@ export async function getSeveralTracks(
   }
 }
 
+//! THIS API ENDPOINT IS NOW DEPRECIATED AS OF 11/27/24
+//! https://developer.spotify.com/blog/2024-11-27-changes-to-the-web-api
 export async function getArtistRelatedArtists(
   artistId: SpotifyApi.ArtistObjectFull['id']
 ): Promise<SpotifyApi.ArtistObjectFull[]> {
