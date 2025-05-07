@@ -24,8 +24,8 @@ export default function TrackList({
   };
 
   const TRACK_LIST_VARIANTS = {
-    default: `flex flex-col gap-4 px-4 max-h-[80vh] overflow-y-auto`,
-    compact: `flex flex-col gap-4 px-4 max-h-96 overflow-y-auto`,
+    default: `flex flex-col gap-4 px-4 max-h-[80vh] overflow-y-auto w-full`,
+    compact: `flex flex-col gap-4 px-4 max-h-[80vh] w-3/4 overflow-y-auto`,
   };
 
   return (

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
-import { sendEmail } from 'lib/aws/sesClient.ts';
+import { sendEmail } from '@/lib/aws/sesClient';
 import { Button } from '@/components/ui/button';
 
 type Inputs = {

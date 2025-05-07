@@ -1,4 +1,4 @@
-import { getTracksAudioFeatures, getUsersTopItems } from '@/lib/spotify';
+import { getUsersTopItems } from '@/lib/spotify';
 
 interface Props {
   timeRange: 'short_term' | 'medium_term' | 'long_term';
@@ -21,29 +21,12 @@ export default async function useUserTop(
     try {
       const response = await getUsersTopItems(type, timeRange, 50);
       //* happy path
+
       const { items: tracks }: { items: SpotifyApi.TrackObjectFull[] } =
         response;
 
-      const getTrackIds = (tracks: SpotifyApi.TrackObjectFull[]) => {
-        return tracks.map((tracks) => tracks.id).join(',');
-      };
-
       const trackUris = tracks.map((track) => track.uri);
 
-      const { audio_features: features } = await getTracksAudioFeatures(
-        getTrackIds(tracks)
-      );
-
-      const addMetadataToTracks = (
-        tracks: SpotifyApi.TrackObjectFull[],
-        features: SpotifyApi.AudioFeaturesObject[]
-      ) => {
-        for (let i = 0; i < tracks.length; i++) {
-          Object.assign(tracks[i], features[i]);
-        }
-      };
-
-      addMetadataToTracks(tracks, features);
       return {
         tracks,
         trackUris,

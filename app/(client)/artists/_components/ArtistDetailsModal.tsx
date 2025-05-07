@@ -2,14 +2,10 @@ import {
   List,
   ListItem,
   Divider,
-  Stack,
   Box,
   Typography,
   Dialog,
 } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
-import { getArtistRelatedArtists } from '@/lib/spotify';
-import ArtistCard from './ArtistCard';
 import TrackView from '../../tracks/_components/TrackView';
 
 const style = {
@@ -46,13 +42,6 @@ export default function ArtistDetailsModal({
   onRepeat,
   timeRange,
 }: Props) {
-  // fetch an artist's related artists
-  const { data, isError, error, isFetching, refetch } = useQuery({
-    queryKey: [selectedArtist?.name],
-    queryFn: () => getArtistRelatedArtists(selectedArtist?.id),
-    enabled: isModalOpen,
-  });
-
   let timeRangeText = 'last 4 weeks';
 
   switch (timeRange) {
@@ -109,19 +98,6 @@ export default function ArtistDetailsModal({
           </Typography>
         </Box>
         <Divider component="div" role="presentation" sx={{ padding: '.5em' }} />
-        <Typography variant="h6">Related Artists:</Typography>
-
-        <div className="grid grid-cols-2 md:flex md:flex-row">
-          {data?.artists.slice(0, 5).map((artist) => (
-            <ArtistCard
-              key={artist.id}
-              artist={artist}
-              setIsModalOpen={setIsModalOpen}
-              isModalOpen={isModalOpen}
-              setSelectedArtist={setSelectedArtist}
-            />
-          ))}
-        </div>
       </Box>
     </Dialog>
   );

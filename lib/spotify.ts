@@ -102,6 +102,8 @@ export async function getUsersTopItems(
   }
 }
 
+//! THIS API ENDPOINT IS NOW DEPRECIATED AS OF 11/27/24
+//! https://developer.spotify.com/blog/2024-11-27-changes-to-the-web-api
 export async function getTracksAudioFeatures(
   trackIDs: string
 ): Promise<SpotifyApi.MultipleAudioFeaturesResponse> {
@@ -145,7 +147,7 @@ export async function createPlaylist(timeRange) {
     body: JSON.stringify({
       name: `Top Tracks ${timestamp}`,
       public: true,
-      description: `Your favorite tracks ${timeRange} as of ${timestamp}. Created by spotifygpt.com`,
+      description: `Your favorite tracks ${timeRange} as of ${timestamp}. Created by stats4spotify.fyi`,
     }),
   };
 
@@ -218,6 +220,8 @@ export async function getSeveralTracks(
   }
 }
 
+//! THIS API ENDPOINT IS NOW DEPRECIATED AS OF 11/27/24
+//! https://developer.spotify.com/blog/2024-11-27-changes-to-the-web-api
 export async function getArtistRelatedArtists(
   artistId: SpotifyApi.ArtistObjectFull['id']
 ): Promise<SpotifyApi.ArtistObjectFull[]> {
