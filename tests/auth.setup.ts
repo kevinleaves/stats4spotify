@@ -5,10 +5,13 @@ const authFile = 'playwright/.auth/user.json';
 setup('authenticate', async ({ page }) => {
   // Perform authentication steps.
   await page.goto(
-    'https://spotifygpt.vercel.app/api/auth/signin?callbackUrl=https%3A%2F%2Fspotifygpt.vercel.app%2F'
+    'https://stats4spotify.fyi/api/auth/signin?callbackUrl=https%3A%2F%2Fstats4spotify.fyi%2F'
   );
+
   await page.getByRole('button', { name: 'Sign in with Spotify' }).click();
+
   await page.getByTestId('login-username').click();
+
   await page.getByTestId('login-username').fill(process.env.SPOTIFYACC);
   await page.getByTestId('login-password').click();
   await page.getByTestId('login-password').press('Meta+a');

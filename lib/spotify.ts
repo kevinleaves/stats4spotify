@@ -147,7 +147,7 @@ export async function createPlaylist(timeRange) {
     body: JSON.stringify({
       name: `Top Tracks ${timestamp}`,
       public: true,
-      description: `Your favorite tracks ${timeRange} as of ${timestamp}. Created by spotifygpt.com`,
+      description: `Your favorite tracks ${timeRange} as of ${timestamp}. Created by stats4spotify.fyi`,
     }),
   };
 

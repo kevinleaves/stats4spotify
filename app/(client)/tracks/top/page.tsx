@@ -3,7 +3,6 @@ import Loading from './loading';
 import TrackList from '../_components/TrackList';
 import ExportPlaylistButton from '../_components/ExportPlaylistButton';
 import useUserTop from '../_hooks/useUserTop';
-import Chat from '../../(widgets)/(input)/Chat';
 import { Typography } from '@mui/material';
 import getArtistString from '@/lib/utils/getArtistString';
 import {
@@ -102,7 +101,7 @@ export async function TracksPage({ searchParams }: Props) {
                   </Typography>
                 </DialogTitle>
                 <DialogDescription>
-                  Your most played tracks: {timeRangeSuffix}.
+                  Your most played tracks: {timeRangeSuffix}
                 </DialogDescription>
               </DialogHeader>
               <TrackList
@@ -118,11 +117,7 @@ export async function TracksPage({ searchParams }: Props) {
               </DialogFooter>
             </DialogContent>
           </Dialog>
-          <Chat
-            simplifiedTracks={simplifiedTracks}
-            demo={false}
-            placeholder={"FantanoBot's response will show up here..."}
-          />
+
           <Typography
             variant="h2"
             sx={{

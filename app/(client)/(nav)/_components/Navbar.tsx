@@ -32,7 +32,7 @@ export default function Navbar({}: Props) {
       <Button asChild variant={'outline'}>
         <Link href={'/'}>
           <FontAwesomeIcon className={'h-4 pr-4'} icon={fab.faSpotify} />
-          SpotifyGPT
+          Stats4Spotify
         </Link>
       </Button>
       <>

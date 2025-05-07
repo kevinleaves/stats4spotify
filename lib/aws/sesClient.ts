@@ -82,7 +82,7 @@ export const sendEmail = async (body: Inputs) => {
       // Message
       Subject: {
         // Content
-        Data: 'SpotifyGPT Whitelist Request', // required
+        Data: 'stats4spotify Whitelist Request', // required
         Charset: 'UTF-8',
       },
       Body: {

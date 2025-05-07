@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('already logged in state', async ({ page }) => {
-  await page.goto('https://spotifygpt.vercel.app/');
+  await page.goto('https://stats4spotify.fyi/');
   await expect(page.getByRole('button', { name: 'Sign out' })).toBeVisible({
     timeout: 3000,
   });

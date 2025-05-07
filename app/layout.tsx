@@ -15,8 +15,9 @@ import { authOptions } from '@/lib/auth';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'spotifygpt',
-  description: 'use AI to discover music',
+  title: 'stats4spotify',
+  description:
+    'view your top tracks, artists, and recently played songs to explore your Spotify listening habits',
 };
 
 export default async function RootLayout({
