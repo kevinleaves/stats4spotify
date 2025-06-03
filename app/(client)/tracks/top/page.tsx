@@ -23,21 +23,15 @@ interface Props {
 }
 
 export default async function TracksPageWrapper(props: Props) {
-  // As of Next.js 13.4.1, modifying searchParams doesn't trigger the page's file-based suspense boundary to re-fallback.
-  // So to bypass that until there's a fix, we'll make our manage our own suspense boundary with params as a unique key.
-
-  // The "dialog" search param shouldn't trigger a re-fetch
-  const key = JSON.stringify({ ...props.searchParams });
-
   return (
-    <Suspense key={key} fallback={<Loading />}>
+    <Suspense fallback={<Loading />}>
       <TracksPage {...props} />
     </Suspense>
   );
 }
 
 export async function TracksPage({ searchParams }: Props) {
-  const { timeRange } = searchParams;
+  const { timeRange } = await searchParams;
 
   let timeRangeSuffix = '';
 
