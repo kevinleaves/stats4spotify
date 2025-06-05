@@ -39,10 +39,26 @@ export function ShareableSummary({
         cacheBust: true,
       });
 
-      const link = document.createElement('a');
-      link.download = `spotify-stats-${new Date().toISOString().split('T')[0]}.png`;
-      link.href = dataUrl;
-      link.click();
+      const response = await fetch(dataUrl);
+      const blob = await response.blob();
+      const file = new File(
+        [blob],
+        `spotify-stats-${new Date().toISOString().split('T')[0]}.png`,
+        {
+          type: 'image/png',
+        }
+      );
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const uploadResponse = await fetch(`/api/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const res = await uploadResponse.json();
+      window.open(res.url, '_blank');
     } catch (error) {
       console.error('Error generating image:', error);
     } finally {
