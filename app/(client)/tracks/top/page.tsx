@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { OpenInNewWindowIcon } from '@radix-ui/react-icons';
+import { ShareableSummary } from '@/app/_components/summary/ShareableSummary';
 
 interface Props {
   params: { slug: string };
@@ -46,6 +47,7 @@ export async function TracksPage({ searchParams }: Props) {
       timeRangeSuffix = 'all time';
       break;
     default:
+      timeRangeSuffix = 'last 4 weeks';
       break;
   }
 
@@ -72,7 +74,7 @@ export async function TracksPage({ searchParams }: Props) {
           <Dialog>
             <DialogTrigger>
               <Button>
-                View List &nbsp; <OpenInNewWindowIcon />
+                Share &nbsp; <OpenInNewWindowIcon />
               </Button>
             </DialogTrigger>
             <DialogContent>
@@ -95,20 +97,10 @@ export async function TracksPage({ searchParams }: Props) {
                   </Typography>
                 </DialogTitle>
                 <DialogDescription>
-                  Your most played tracks: {timeRangeSuffix}
+                  Tracks you can&apos;t get enough of.
                 </DialogDescription>
               </DialogHeader>
-              <TrackList
-                tracks={tracks}
-                trackViewVariant="compact"
-                variant="default"
-              />
-              <DialogFooter className="flex sm:justify-center">
-                <ExportPlaylistButton
-                  headerText={headerText}
-                  uris={trackUris}
-                />
-              </DialogFooter>
+              <ShareableSummary tracks={tracks} timeRange={timeRange} />
             </DialogContent>
           </Dialog>
 
