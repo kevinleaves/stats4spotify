@@ -33,7 +33,7 @@ export default function Contact({}: Props) {
     /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-4 w-full sm:w-1/2"
+      className="flex flex-col gap-4 w-full"
     >
       {/* register your input into the hook by invoking the "register" function */}
       <Controller
@@ -107,7 +107,7 @@ export default function Contact({}: Props) {
           type="submit"
           className="border-solid border-2 hover:bg-green-600 hover:text-black"
         >
-          Send me an email
+          Send us an email
         </Button>
       )}
     </form>

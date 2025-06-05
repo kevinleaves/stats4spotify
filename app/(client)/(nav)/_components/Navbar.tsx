@@ -13,7 +13,7 @@ interface Props {}
 const links = [
   { id: 1, link: '/artists/top', label: 'Top Artists' },
   { id: 2, link: '/tracks/top', label: 'Top Tracks' },
-  { id: 3, link: '/tracks/recent', label: 'Recently played' },
+  { id: 3, link: '/tracks/recent', label: 'Recently Played' },
 ];
 
 export default function Navbar({}: Props) {
