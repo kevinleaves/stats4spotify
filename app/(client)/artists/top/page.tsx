@@ -11,6 +11,17 @@ import ArtistDetailsModal from '../_components/ArtistDetailsModal';
 import filterTracksByArtist from '@/lib/utils/filterTracksByArtist';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { ShareableSummary } from '@/app/_components/summary/ShareableSummary';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { OpenInNewWindowIcon } from '@radix-ui/react-icons';
 
 interface Props {}
 
@@ -82,6 +93,38 @@ export default function ClientArtistPage({}: Props) {
 
   return (
     <main className="flex flex-col justify-center items-center gap-4 sm:max-lg:gap-8">
+      <div className="flex flex-col items-center gap-4 w-full">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="mb-4">
+              Share &nbsp; <OpenInNewWindowIcon />
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>
+                <Typography
+                  variant="h2"
+                  sx={{
+                    '@media (min-width: 1024px)': {
+                      fontSize: '1.875rem',
+                      lineHeight: '2.25rem',
+                    },
+                    fontSize: '1.125rem',
+                    lineHeight: '1.75rem',
+                    fontWeight: 700,
+                    letterSpacing: '-0.05em',
+                  }}
+                >
+                  {headerText}
+                </Typography>
+              </DialogTitle>
+              <DialogDescription>Your favorite artists.</DialogDescription>
+            </DialogHeader>
+            <ShareableSummary artists={artists} timeRange={timeRange} />
+          </DialogContent>
+        </Dialog>
+      </div>
       <Typography
         variant="h2"
         sx={{
